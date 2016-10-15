@@ -1,4 +1,4 @@
-package br.com.alunos;
+package alunos;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
