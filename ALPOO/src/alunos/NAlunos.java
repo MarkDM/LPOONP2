@@ -129,7 +129,7 @@ public class NAlunos {
         }
     }
 
-    public void excluiCliente(EAluno aluno) {
+    public void excluiAluno(EAluno aluno) {
         PreparedStatement pstm = null;
         Connection con = null;
         try {

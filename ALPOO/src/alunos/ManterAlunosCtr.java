@@ -15,9 +15,6 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       
-        
-        
         
         if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
 
