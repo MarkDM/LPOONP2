@@ -47,7 +47,7 @@ public class NAlunos {
         }
     }
 
-    public void alteraCliente(EAluno aluno) {
+    public void alteraAluno(EAluno aluno) {
         if (aluno != null) {
             Connection con = null;
             PreparedStatement pstm = null;
