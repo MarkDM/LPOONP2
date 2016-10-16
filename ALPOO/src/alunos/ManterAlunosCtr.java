@@ -15,19 +15,21 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+       
         
         
-//        if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
-//
-//        } else if (e.getSource() == this.manterAlunos.getBtnAlterar()) {
-//
-//        } else if (e.getSource() == this.manterAlunos.getBtnConsultar()) {
-//
-//        } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
-//
-//        } else if (e.getSource() == this.manterAlunos.getBtnSair()) {
-//            windowClosing(null);
-//        }
+        
+        if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
+
+        } else if (e.getSource() == this.manterAlunos.getBtnAlterar()) {
+
+        } else if (e.getSource() == this.manterAlunos.getBtnConstultar()) {
+
+        } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
+
+        } else if (e.getSource() == this.manterAlunos.getBtnSair()) {
+            windowClosing(null);
+        }
     }
 
     @Override
