@@ -16,12 +16,16 @@ public class NAlunos {
 
     private final String INSERT = "INSERT INTO ALUNOS(RA,NOME,DT_NASCIMENTO,CIDADE_NASCIMENTO,UF_NASCIMENTO,NOME_PAI,NOME_MAE)"
             + " VALUES(?,?,?,?,?,?,?)";
+    
     private final String UPDATE = "UPDATE ALUNOS SET NOME = ?,DT_NASCIMENTO = ?,CIDADE_NASCIMENTO= ?"
             + "UF_NASCIMENTO = ?,NOME_PAI = ?,NOME_MAE = ?"
             + "WHERE RA = ?";
+    
     private final String DELETE = "DELETE FROM ALUNOS WHERE RA = ?";
     private final String LIST = "SELECT * FROM ALUNOS";
+
     private final String FIND = "SELECT * FROM ALUNOS WHERE RA = ?";
+
 
     public NAlunos() {
     }
@@ -91,6 +95,10 @@ public class NAlunos {
                 aluno.setUf_de_nascimento(rs.getString("UF_NASCIMENTO"));
                 aluno.setNome_pai(rs.getString("NOME_PAI"));
                 aluno.setNome_mae(rs.getString("NOME_MAE"));
+                aluno.setRua(rs.getString("RUA"));
+                aluno.setSetor(rs.getString("RUA"));
+                aluno.setCep(rs.getString("CEP"));
+               
 
                 alunos.add(aluno);
             }

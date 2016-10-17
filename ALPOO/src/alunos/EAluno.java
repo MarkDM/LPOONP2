@@ -12,13 +12,74 @@ public class EAluno {
 
     private String ra;              //maxsize 7
     private String nome;        //maxsize 60
-   
     private Date data_nascimento;
     private String cidade_nascimento; //maxsize 60
     private String uf_de_nascimento; //maxsize 2
-
     private String nome_pai; //maxsize 60
     private String nome_mae; //maxsize 60
+    private String rua;
+    private String setor;
+    private String cep;
+    private String cidade_atual;
+    private String UF_atual;
+    private String nome_curso;
+    private Date data_matricula;
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getSetor() {
+        return setor;
+    }
+
+    public void setSetor(String setor) {
+        this.setor = setor;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getCidade_atual() {
+        return cidade_atual;
+    }
+
+    public void setCidade_atual(String cidade_atual) {
+        this.cidade_atual = cidade_atual;
+    }
+
+    public String getUF_atual() {
+        return UF_atual;
+    }
+
+    public void setUF_atual(String UF_atual) {
+        this.UF_atual = UF_atual;
+    }
+
+    public String getNome_curso() {
+        return nome_curso;
+    }
+
+    public void setNome_curso(String nome_curso) {
+        this.nome_curso = nome_curso;
+    }
+
+    public Date getData_matricula() {
+        return data_matricula;
+    }
+
+    public void setData_matricula(Date data_matricula) {
+        this.data_matricula = data_matricula;
+    }
 
     public String getRa() {
         return ra;
@@ -81,8 +142,6 @@ public class EAluno {
         return "EAluno{" + "ra=" + ra + ", nome=" + nome + ", data_nascimento=" + data_nascimento + ", cidade_nascimento=" + cidade_nascimento + ", uf_de_nascimento=" + uf_de_nascimento + ", nome_pai=" + nome_pai + ", nome_mae=" + nome_mae + '}';
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -124,5 +183,5 @@ public class EAluno {
             return false;
         }
         return Objects.equals(this.nome_mae, other.nome_mae);
-    }    
+    }
 }
