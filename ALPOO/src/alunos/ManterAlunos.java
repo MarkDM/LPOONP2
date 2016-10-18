@@ -38,16 +38,32 @@ public class ManterAlunos extends javax.swing.JFrame {
     }
 
     public JButton getBtnConstultar() {
-        return btnConstultar;
+        return btnConsultar;
     }
     
+    public String getRA(){
+        return this.txtRA.getText();
+    }
     
+    public void setRA(String ra){
+        this.txtRA.setText(ra);
+    }
+    
+    public void setNome(String nome){
+        this.txtNomeAluno.setText(nome);
+    }
 
     /**
      * Creates new form ManterAlunos
      */
     public ManterAlunos() {
         initComponents();
+        this.addWindowListener(new ManterAlunosCtr(this));
+        this.btnConsultar.addActionListener(new ManterAlunosCtr(this));
+        this.btnAlterar.addActionListener(new ManterAlunosCtr(this));
+        this.btnIncluir.addActionListener(new ManterAlunosCtr(this));
+        this.btnIncluir.addActionListener(new ManterAlunosCtr(this));
+        this.btnSair.addActionListener(new ManterAlunosCtr(this));
     }
 
     /**
@@ -65,12 +81,12 @@ public class ManterAlunos extends javax.swing.JFrame {
         btnExcluir = new javax.swing.JButton();
         btnAnterior = new javax.swing.JButton();
         btnProximo = new javax.swing.JButton();
-        btnConstultar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         txtNomeAluno = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtRA = new javax.swing.JTextField();
         txtDataNasc = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -128,8 +144,8 @@ public class ManterAlunos extends javax.swing.JFrame {
         btnProximo.setText("Próximo");
         btnProximo.setName("btnProximo"); // NOI18N
 
-        btnConstultar.setText("Consultar");
-        btnConstultar.setName("btnExcluir"); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.setName("btnExcluir"); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -143,7 +159,7 @@ public class ManterAlunos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnConstultar)
+                .addComponent(btnConsultar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAnterior)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -160,7 +176,7 @@ public class ManterAlunos extends javax.swing.JFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnAnterior)
                     .addComponent(btnProximo)
-                    .addComponent(btnConstultar))
+                    .addComponent(btnConsultar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -174,7 +190,7 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         jLabel1.setText("Ra");
 
-        jTextField4.setName("txtRA"); // NOI18N
+        txtRA.setName("txtRA"); // NOI18N
 
         try {
             txtDataNasc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -228,24 +244,22 @@ public class ManterAlunos extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtRA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(219, 219, 219)
-                                        .addComponent(jLabel6))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(txtNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtDataNasc))))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel7)
                                     .addComponent(txtRua)
                                     .addComponent(jLabel11)
                                     .addComponent(cbxCidadeAtual, 0, 222, Short.MAX_VALUE))
-                                .addGap(18, 28, Short.MAX_VALUE)
+                                .addGap(18, 18, Short.MAX_VALUE)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,7 +307,7 @@ public class ManterAlunos extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtRA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cbxCidadeNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -483,7 +497,7 @@ public class ManterAlunos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnAnterior;
-    private javax.swing.JButton btnConstultar;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnProximo;
@@ -514,7 +528,6 @@ public class ManterAlunos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JMenu menuCidades;
     private javax.swing.JMenuItem menuCursos;
     private javax.swing.JMenuItem menuUF;
@@ -524,6 +537,7 @@ public class ManterAlunos extends javax.swing.JFrame {
     private javax.swing.JTextField txtNomeAluno;
     private javax.swing.JTextField txtNomeMae;
     private javax.swing.JTextField txtNomePai;
+    private javax.swing.JTextField txtRA;
     private javax.swing.JTextField txtRua;
     private javax.swing.JTextField txtSetor;
     // End of variables declaration//GEN-END:variables

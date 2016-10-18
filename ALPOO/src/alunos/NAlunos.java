@@ -16,20 +16,44 @@ public class NAlunos {
 
     private final String INSERT = "INSERT INTO ALUNOS(RA,NOME,DT_NASCIMENTO,CIDADE_NASCIMENTO,UF_NASCIMENTO,NOME_PAI,NOME_MAE)"
             + " VALUES(?,?,?,?,?,?,?)";
-    
+
     private final String UPDATE = "UPDATE ALUNOS SET NOME = ?,DT_NASCIMENTO = ?,CIDADE_NASCIMENTO= ?"
             + "UF_NASCIMENTO = ?,NOME_PAI = ?,NOME_MAE = ?"
             + "WHERE RA = ?";
-    
+
     private final String DELETE = "DELETE FROM ALUNOS WHERE RA = ?";
-    private final String LIST = "SELECT * FROM ALUNOS";
 
-    private final String FIND = "SELECT * FROM ALUNOS WHERE RA = ?";
+    private final String LIST = "select al.ra\n"
+            + "       ,al.nome\n"
+            + "       ,al.dt_nascimento\n"
+            + "       ,cidn.cidade_nome as CidadeNascimento\n"
+            + "       ,al.nome_pai\n"
+            + "       ,al.nome_mae\n"
+            + "       ,en.rua\n"
+            + "       ,en.setor\n"
+            + "       ,en.cep\n"
+            + "       ,cid.cidade_nome   as Cidade_Atual\n"
+            + "       ,ufn.uf_descricao  as UF_Nascimento\n"
+            + "       ,ufn.uf_sigla      as UF_Nascimento_sigla\n"
+            + "       ,uf.uf_descricao   as UF_Atual\n"
+            + "       ,uf.uf_sigla       as UF_Atual_sigla\n"
+            + "       ,c.nome_curso      as Curso\n"
+            + "\n"
+            + "from alunos as al\n"
+            + "inner join cidades as cidn on al.cidade_nascimento = cidn.cidade_id\n"
+            + "inner join endereco as en on en.endereco_id = al.endereco_id\n"
+            + "inner join cidades  as cid on cid.cidade_id = en.cidade_id\n"
+            + "inner join unidade_federativa as ufn on ufn.uf_id = uf_nascimento\n"
+            + "inner join unidade_federativa as uf on uf.uf_id = en.uf\n"
+            + "inner join aluno_curso alc on alc.aluno_ra = al.ra\n"
+            + "inner join curso as c on c.curso_id = alc.curso_id";
 
+    private final String FIND = this.LIST + " WHERE RA = ?";
 
     public NAlunos() {
     }
 
+    
     public void adicionarAluno(EAluno aluno) {
         Connection conexao = null;
         PreparedStatement pstm = null;
@@ -90,15 +114,12 @@ public class NAlunos {
 
                 aluno.setRa(rs.getString("RA"));
                 aluno.setNome(rs.getString("NOME"));
-                aluno.setData_nascimento(rs.getDate("DT_NASCIMENTO"));
-                aluno.setCidade_nascimento(rs.getString("CIDADE_NASCIMENTO"));
-                aluno.setUf_de_nascimento(rs.getString("UF_NASCIMENTO"));
-                aluno.setNome_pai(rs.getString("NOME_PAI"));
-                aluno.setNome_mae(rs.getString("NOME_MAE"));
-                aluno.setRua(rs.getString("RUA"));
-                aluno.setSetor(rs.getString("RUA"));
-                aluno.setCep(rs.getString("CEP"));
-               
+                aluno.setData_nascimento(rs.getDate("dt_nascimento"));
+                aluno.setCidade_nascimento(rs.getString("cidade_nascimento"));
+                aluno.setUf_de_nascimento(rs.getString("uf_nascimento"));
+                aluno.setNome_pai(rs.getString("nome_pai"));
+                aluno.setNome_mae(rs.getString("nome_mae"));
+                
 
                 alunos.add(aluno);
             }
@@ -110,8 +131,61 @@ public class NAlunos {
         return alunos;
     }
 
+    public List<String> getUFS() {
+
+        PreparedStatement pstm = null;
+        Connection con = null;
+        ResultSet rs = null;
+        List<String> uf_siglas = new ArrayList<String>();
+
+        try {
+            con = new ConnectionFactory2().getConnection();
+
+            pstm = con.prepareStatement("SELECT UF_SIGLA FROM UNIDADE_FEDERATIVA");
+            rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                uf_siglas.add(rs.getString("UF_SIGLA"));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectionFactory2.fechaConexao(con, pstm, rs);
+        }
+
+        return uf_siglas;
+    }
+
+    public List<String> getCidades() {
+
+        PreparedStatement pstm = null;
+        Connection con = null;
+        ResultSet rs = null;
+        List<String> cidades = new ArrayList<String>();
+
+        try {
+            con = new ConnectionFactory2().getConnection();
+
+            pstm = con.prepareStatement("SELECT CIDADE_NOME FROM CIDADES");
+            rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                cidades.add(rs.getString("CIDADE_NOME"));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectionFactory2.fechaConexao(con, pstm, rs);
+        }
+
+        return cidades;
+    }
+
     public EAluno getAlunoByRa(String ra) {
         EAluno aluno = new EAluno();
+        EEndereco endereco = new EEndereco();
         PreparedStatement pstm = null;
         Connection con = null;
         ResultSet rs = null;
@@ -121,13 +195,21 @@ public class NAlunos {
             pstm.setString(1, ra);
             rs = pstm.executeQuery();
 
-            aluno.setRa(rs.getString("RA"));
-            aluno.setNome(rs.getString("NOME"));
-            aluno.setData_nascimento(rs.getDate("DT_NASCIMENTO"));
-            aluno.setCidade_nascimento(rs.getString("CIDADE_NASCIMENTO"));
-            aluno.setUf_de_nascimento(rs.getString("UF_NASCIMENTO"));
-            aluno.setNome_pai(rs.getString("NOME_PAI"));
-            aluno.setNome_mae(rs.getString("NOME_MAE"));
+            rs.next();
+
+            aluno.setRa(rs.getString("ra"));
+            aluno.setNome(rs.getString("nome"));
+            aluno.setData_nascimento(rs.getDate("dt_nascimento"));
+            aluno.setCidade_nascimento(rs.getString("cidadenascimento"));
+            aluno.setUf_de_nascimento(rs.getString("uf_nascimento"));
+            aluno.setNome_pai(rs.getString("nome_pai"));
+            aluno.setNome_mae(rs.getString("nome_mae"));
+            endereco.setRua(rs.getString("rua"));
+            endereco.setCidade(rs.getString("cidade_atual"));
+            endereco.setCep(rs.getString("cep"));
+            endereco.setUF(rs.getString("uf_atual_sigla"));
+            endereco.setSetor(rs.getString("setor"));
+            
 
             return aluno;
         } catch (Exception e) {

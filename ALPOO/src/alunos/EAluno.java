@@ -6,6 +6,7 @@
 package alunos;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class EAluno {
@@ -17,53 +18,19 @@ public class EAluno {
     private String uf_de_nascimento; //maxsize 2
     private String nome_pai; //maxsize 60
     private String nome_mae; //maxsize 60
-    private String rua;
-    private String setor;
-    private String cep;
-    private String cidade_atual;
-    private String UF_atual;
+    private EEndereco endereco;
     private String nome_curso;
     private Date data_matricula;
+    private List<Cursos> cursos;
 
-    public String getRua() {
-        return rua;
+    public EEndereco getEndereco() {
+        return endereco;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setEndereco(EEndereco endereco) {
+        this.endereco = endereco;
     }
 
-    public String getSetor() {
-        return setor;
-    }
-
-    public void setSetor(String setor) {
-        this.setor = setor;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getCidade_atual() {
-        return cidade_atual;
-    }
-
-    public void setCidade_atual(String cidade_atual) {
-        this.cidade_atual = cidade_atual;
-    }
-
-    public String getUF_atual() {
-        return UF_atual;
-    }
-
-    public void setUF_atual(String UF_atual) {
-        this.UF_atual = UF_atual;
-    }
 
     public String getNome_curso() {
         return nome_curso;
