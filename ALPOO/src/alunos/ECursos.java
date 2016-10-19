@@ -15,7 +15,7 @@ public class ECursos {
 
     private int id;
     private String descricao;
-    
+
     public ECursos() {
     }
 
@@ -32,7 +32,15 @@ public class ECursos {
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        if (descricao.length() > 60 || descricao.contains("/!@#$¨¨&*")) {
+            throw new RuntimeException("Valor digitado invalido!");
+        } else {
+            this.descricao = descricao;
+        }
     }
 
+    @Override
+    public String toString() {
+        return "ECursos{" + "id=" + id + ", descricao=" + descricao + '}';
+    }
 }
