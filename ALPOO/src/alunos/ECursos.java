@@ -5,6 +5,8 @@
  */
 package alunos;
 
+import java.util.Date;
+
 /**
  *
  * @author Marcos
@@ -13,13 +15,8 @@ public class ECursos {
 
     private int id;
     private String descricao;
-
+    
     public ECursos() {
-    }
-
-    public ECursos(int id, String descricao) {
-        this.id = id;
-        this.descricao = descricao;
     }
 
     public int getId() {

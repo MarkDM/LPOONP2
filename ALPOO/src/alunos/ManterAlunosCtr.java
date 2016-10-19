@@ -26,6 +26,13 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
             EAluno aluno = na.getAlunoByRa(manterAlunos.getRA());
             this.manterAlunos.setRA(aluno.getRa());
             this.manterAlunos.setNome(aluno.getNome());
+            this.manterAlunos.setRua(aluno.getEndereco().getRua());
+            this.manterAlunos.setSetor(aluno.getEndereco().getSetor());
+            this.manterAlunos.setCep(aluno.getEndereco().getCep());
+            this.manterAlunos.setDtNascimento(aluno.getData_nascimento());
+            this.manterAlunos.setNomeMae(aluno.getNome_mae());
+            this.manterAlunos.setNomePai(aluno.getNome_pai());
+            this.manterAlunos.setDtMatricula(aluno.getData_matricula());
             
         } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
             

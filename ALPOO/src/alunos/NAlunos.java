@@ -38,22 +38,21 @@ public class NAlunos {
             + "       ,uf.uf_descricao   as UF_Atual\n"
             + "       ,uf.uf_sigla       as UF_Atual_sigla\n"
             + "       ,c.nome_curso      as Curso\n"
+            + "       ,al.data_matricula\n"
             + "\n"
             + "from alunos as al\n"
             + "inner join cidades as cidn on al.cidade_nascimento = cidn.cidade_id\n"
             + "inner join endereco as en on en.endereco_id = al.endereco_id\n"
             + "inner join cidades  as cid on cid.cidade_id = en.cidade_id\n"
-            + "inner join unidade_federativa as ufn on ufn.uf_id = uf_nascimento\n"
-            + "inner join unidade_federativa as uf on uf.uf_id = en.uf\n"
-            + "inner join aluno_curso alc on alc.aluno_ra = al.ra\n"
-            + "inner join curso as c on c.curso_id = alc.curso_id";
+            + "inner join unidade_federativa as ufn on ufn.uf_sigla = en.uf_sigla\n"
+            + "inner join unidade_federativa as uf on uf.uf_sigla = en.uf_sigla\n"
+            + "inner join curso as c on c.curso_id = al.curso_id";
 
-    private final String FIND = this.LIST + " WHERE RA = ?";
+    private final String FIND = this.LIST + " WHERE RA = ? order by al.nome";
 
     public NAlunos() {
     }
 
-    
     public void adicionarAluno(EAluno aluno) {
         Connection conexao = null;
         PreparedStatement pstm = null;
@@ -119,7 +118,6 @@ public class NAlunos {
                 aluno.setUf_de_nascimento(rs.getString("uf_nascimento"));
                 aluno.setNome_pai(rs.getString("nome_pai"));
                 aluno.setNome_mae(rs.getString("nome_mae"));
-                
 
                 alunos.add(aluno);
             }
@@ -186,6 +184,7 @@ public class NAlunos {
     public EAluno getAlunoByRa(String ra) {
         EAluno aluno = new EAluno();
         EEndereco endereco = new EEndereco();
+        ECursos curso = new ECursos();
         PreparedStatement pstm = null;
         Connection con = null;
         ResultSet rs = null;
@@ -204,12 +203,17 @@ public class NAlunos {
             aluno.setUf_de_nascimento(rs.getString("uf_nascimento"));
             aluno.setNome_pai(rs.getString("nome_pai"));
             aluno.setNome_mae(rs.getString("nome_mae"));
+            aluno.setData_matricula(rs.getDate("data_matricula"));
+            aluno.setNome_pai(rs.getString("nome_pai"));
+            aluno.setNome_mae(rs.getString("nome_mae"));
             endereco.setRua(rs.getString("rua"));
             endereco.setCidade(rs.getString("cidade_atual"));
             endereco.setCep(rs.getString("cep"));
             endereco.setUF(rs.getString("uf_atual_sigla"));
             endereco.setSetor(rs.getString("setor"));
-            
+            curso.setDescricao(rs.getString("curso"));
+            aluno.setEndereco(endereco);
+            aluno.setCurso(curso);
 
             return aluno;
         } catch (Exception e) {

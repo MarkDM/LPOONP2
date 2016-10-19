@@ -11,34 +11,26 @@ import java.util.Objects;
 
 public class EAluno {
 
-    private String ra;              //maxsize 7
-    private String nome;        //maxsize 60
+    private String ra;
+    private String nome;
     private Date data_nascimento;
-    private String cidade_nascimento; //maxsize 60
-    private String uf_de_nascimento; //maxsize 2
-    private String nome_pai; //maxsize 60
-    private String nome_mae; //maxsize 60
+    private String cidade_nascimento;
+    private String uf_de_nascimento;
+    private String nome_pai;
+    private String nome_mae;
     private EEndereco endereco;
-    private String nome_curso;
+    private ECursos curso;
     private Date data_matricula;
-    private List<Cursos> cursos;
 
-    public EEndereco getEndereco() {
-        return endereco;
+    public ECursos getCurso() {
+        return curso;
     }
 
-    public void setEndereco(EEndereco endereco) {
-        this.endereco = endereco;
+    public void setCurso(ECursos curso) {
+        this.curso = curso;
     }
-
-
-    public String getNome_curso() {
-        return nome_curso;
-    }
-
-    public void setNome_curso(String nome_curso) {
-        this.nome_curso = nome_curso;
-    }
+    
+    
 
     public Date getData_matricula() {
         return data_matricula;
@@ -46,6 +38,16 @@ public class EAluno {
 
     public void setData_matricula(Date data_matricula) {
         this.data_matricula = data_matricula;
+    }
+    
+
+    public EEndereco getEndereco() {
+        return endereco;
+    }
+    
+
+    public void setEndereco(EEndereco endereco) {
+        this.endereco = endereco;
     }
 
     public String getRa() {

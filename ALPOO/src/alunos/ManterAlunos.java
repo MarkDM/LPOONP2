@@ -5,6 +5,8 @@
  */
 package alunos;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 
 /**
@@ -53,6 +55,37 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.txtNomeAluno.setText(nome);
     }
 
+    public void setRua(String rua){
+        this.txtRua.setText(rua);
+    }
+    
+    public void setSetor(String setor){
+        this.txtSetor.setText(setor);
+    }
+    
+    public void setCep(String cep){
+        this.txtCEP.setText(cep);
+    }
+    
+    public void setDtNascimento(Date dt){
+        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        this.txtDataNasc.setText(f.format(dt));
+    }
+    
+    public void setNomeMae(String mae){
+        this.txtNomeMae.setText(mae.trim());
+    }
+    
+    public void setNomePai(String pai){
+        this.txtNomePai.setText(pai.trim());
+    }
+    
+    public void setDtMatricula(Date dt){
+        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        this.txtDataMatricula.setText(f.format(dt));
+    }
+    
+    
     /**
      * Creates new form ManterAlunos
      */
