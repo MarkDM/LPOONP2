@@ -16,6 +16,23 @@ import javax.swing.JComboBox;
  */
 public class ManterAlunos extends javax.swing.JFrame {
 
+    public JComboBox getCbxUFNasc() {
+        return cbxUFNasc;
+    }
+
+    
+    public JComboBox getCbxCidadeAtual() {
+        return cbxCidadeAtual;
+    }
+
+    public JComboBox getCbxCidadeNasc() {
+        return cbxCidadeNasc;
+    }
+
+    public JComboBox getCbxUF() {
+        return cbxUF;
+    }
+    
     public JComboBox getCbxCurso() {
         return this.cbxCurso;
     }
@@ -157,7 +174,7 @@ public class ManterAlunos extends javax.swing.JFrame {
         txtNomePai = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         txtNomeMae = new javax.swing.JTextField();
-        cbxUF1 = new javax.swing.JComboBox();
+        cbxUFNasc = new javax.swing.JComboBox();
         jLabel16 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -298,7 +315,7 @@ public class ManterAlunos extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addComponent(txtRA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3))
@@ -324,8 +341,8 @@ public class ManterAlunos extends javax.swing.JFrame {
                                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cbxUF, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel12))
+                                            .addComponent(jLabel12)
+                                            .addComponent(cbxUF, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel14)
@@ -337,8 +354,8 @@ public class ManterAlunos extends javax.swing.JFrame {
                             .addComponent(jLabel15)
                             .addComponent(txtNomeMae)
                             .addComponent(jLabel16)
-                            .addComponent(cbxUF1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(107, Short.MAX_VALUE))
+                            .addComponent(cbxUFNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,7 +397,7 @@ public class ManterAlunos extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel16)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cbxUF1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(cbxUFNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -567,7 +584,7 @@ public class ManterAlunos extends javax.swing.JFrame {
     private javax.swing.JComboBox cbxCidadeNasc;
     private javax.swing.JComboBox cbxCurso;
     private javax.swing.JComboBox cbxUF;
-    private javax.swing.JComboBox cbxUF1;
+    private javax.swing.JComboBox cbxUFNasc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

@@ -6,6 +6,7 @@
 package alunos;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -14,8 +15,10 @@ import java.util.List;
 
 public class NAlunos {
 
-    private final String INSERT = "INSERT INTO ALUNOS(RA,NOME,DT_NASCIMENTO,CIDADE_NASCIMENTO,UF_NASCIMENTO,NOME_PAI,NOME_MAE)"
-            + " VALUES(?,?,?,?,?,?,?)";
+    private final String INSERT = "INSERT INTO alunos(\n"
+            + "            ra, nome, dt_nascimento, nome_pai, nome_mae, endereco_id, cidade_nascimento, \n"
+            + "            uf_sigla, curso_id, data_matricula)\n"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     private final String UPDATE = "UPDATE ALUNOS SET NOME = ?,DT_NASCIMENTO = ?,CIDADE_NASCIMENTO= ?"
             + "UF_NASCIMENTO = ?,NOME_PAI = ?,NOME_MAE = ?"
@@ -81,13 +84,12 @@ public class NAlunos {
             try {
                 con = new ConnectionFactory2().getConnection();
                 pstm = con.prepareStatement(UPDATE);
-                pstm.setString(1, aluno.getNome());
-                pstm.setDate(2, new java.sql.Date(aluno.getData_nascimento().getTime()));
-                pstm.setString(3, aluno.getCidade_nascimento());
-                pstm.setString(4, aluno.getUf_de_nascimento());
-                pstm.setString(5, aluno.getNome_pai());
-                pstm.setString(6, aluno.getNome_mae());
-                pstm.setString(7, aluno.getRa());
+                pstm.setString(1, aluno.getRa());
+                pstm.setString(2, aluno.getNome());
+                pstm.setDate(3, (Date) aluno.getData_nascimento());
+                pstm.setString(4, aluno.getNome_pai());
+                pstm.setString(5, aluno.getNome_mae());
+
                 pstm.execute();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -127,58 +129,6 @@ public class NAlunos {
             ConnectionFactory2.fechaConexao(con, pstm, rs);
         }
         return alunos;
-    }
-
-    public List<String> getUFS() {
-
-        PreparedStatement pstm = null;
-        Connection con = null;
-        ResultSet rs = null;
-        List<String> uf_siglas = new ArrayList<String>();
-
-        try {
-            con = new ConnectionFactory2().getConnection();
-
-            pstm = con.prepareStatement("SELECT UF_SIGLA FROM UNIDADE_FEDERATIVA");
-            rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                uf_siglas.add(rs.getString("UF_SIGLA"));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            ConnectionFactory2.fechaConexao(con, pstm, rs);
-        }
-
-        return uf_siglas;
-    }
-
-    public List<String> getCidades() {
-
-        PreparedStatement pstm = null;
-        Connection con = null;
-        ResultSet rs = null;
-        List<String> cidades = new ArrayList<String>();
-
-        try {
-            con = new ConnectionFactory2().getConnection();
-
-            pstm = con.prepareStatement("SELECT CIDADE_NOME FROM CIDADES");
-            rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                cidades.add(rs.getString("CIDADE_NOME"));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            ConnectionFactory2.fechaConexao(con, pstm, rs);
-        }
-
-        return cidades;
     }
 
     public EAluno getAlunoByRa(String ra) {

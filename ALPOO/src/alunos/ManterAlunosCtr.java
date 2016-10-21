@@ -34,8 +34,14 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
             this.manterAlunos.setNomeMae(aluno.getNome_mae());
             this.manterAlunos.setNomePai(aluno.getNome_pai());
             this.manterAlunos.setDtMatricula(aluno.getData_matricula());
+            this.manterAlunos.getCbxCurso().setSelectedItem(aluno.getCurso().getDescricao());
+            this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento());
+            this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento());
+            this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getEndereco().getCidade());
 
         } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
+
+            NAlunos na = new NAlunos();
 
         } else if (e.getSource() == this.manterAlunos.getBtnSair()) {
             windowClosing(null);
@@ -47,6 +53,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
                     c.setDescricao(nomeCurso);
                     NCursos cursoDAO = new NCursos();
                     cursoDAO.addCurso(c);
+                    listarCursos();
                     JOptionPane.showMessageDialog(null, "Curso adicionado com sucesso!");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -55,12 +62,37 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
         }
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
+    private void listarCursos() {
+        this.manterAlunos.getCbxCurso().removeAllItems();
         NCursos cursoDao = new NCursos();
         for (ECursos curso : cursoDao.listar()) {
             this.manterAlunos.getCbxCurso().addItem(curso.getDescricao());
         }
+    }
+    
+    private void listarCidadesUfs(){
+        this.manterAlunos.getCbxCidadeAtual().removeAllItems();
+        this.manterAlunos.getCbxUF().removeAllItems();
+        NEndereco enderecoDao = new NEndereco();
+        
+        for(ECidades cidade : enderecoDao.listarCidades()) {
+            this.manterAlunos.getCbxCidadeAtual().addItem(cidade.getNome());
+            this.manterAlunos.getCbxCidadeNasc().addItem(cidade.getNome());
+        }
+        
+        for(EUnidadeFederativa uf : enderecoDao.listarUF() ) {
+            
+            this.manterAlunos.getCbxUF().addItem(uf.getUf_sigla());
+            this.manterAlunos.getCbxUFNasc().addItem(uf.getUf_sigla());
+        }
+    }
+    
+
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        listarCursos();
+        listarCidadesUfs();
     }
 
     @Override
@@ -85,7 +117,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
 
     @Override
     public void windowActivated(WindowEvent e) {
-       
+
     }
 
     @Override
