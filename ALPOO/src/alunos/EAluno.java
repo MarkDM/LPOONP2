@@ -14,41 +14,18 @@ public class EAluno {
     private String ra;
     private String nome;
     private Date data_nascimento;
-    private String cidade_nascimento;
+    private ECidades cidade_nascimento;
     private String uf_de_nascimento;
     private String nome_pai;
     private String nome_mae;
-    private EEndereco endereco;
+    private String rua;
+    private String setor;
+    private String cep;
+    private String uf;
+    private ECidades cidade;
+    //private EEndereco endereco;
     private ECursos curso;
     private Date data_matricula;
-
-    public ECursos getCurso() {
-        return curso;
-    }
-
-    public void setCurso(ECursos curso) {
-        this.curso = curso;
-    }
-    
-    
-
-    public Date getData_matricula() {
-        return data_matricula;
-    }
-
-    public void setData_matricula(Date data_matricula) {
-        this.data_matricula = data_matricula;
-    }
-    
-
-    public EEndereco getEndereco() {
-        return endereco;
-    }
-    
-
-    public void setEndereco(EEndereco endereco) {
-        this.endereco = endereco;
-    }
 
     public String getRa() {
         return ra;
@@ -74,11 +51,11 @@ public class EAluno {
         this.data_nascimento = data_nascimento;
     }
 
-    public String getCidade_nascimento() {
+    public ECidades getCidade_nascimento() {
         return cidade_nascimento;
     }
 
-    public void setCidade_nascimento(String cidade_nascimento) {
+    public void setCidade_nascimento(ECidades cidade_nascimento) {
         this.cidade_nascimento = cidade_nascimento;
     }
 
@@ -105,6 +82,65 @@ public class EAluno {
     public void setNome_mae(String nome_mae) {
         this.nome_mae = nome_mae;
     }
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getSetor() {
+        return setor;
+    }
+
+    public void setSetor(String setor) {
+        this.setor = setor;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public ECidades getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(ECidades cidade) {
+        this.cidade = cidade;
+    }
+
+    public ECursos getCurso() {
+        return curso;
+    }
+
+    public void setCurso(ECursos curso) {
+        this.curso = curso;
+    }
+
+    public Date getData_matricula() {
+        return data_matricula;
+    }
+
+    public void setData_matricula(Date data_matricula) {
+        this.data_matricula = data_matricula;
+    }
+
+    
+    
 
     @Override
     public String toString() {

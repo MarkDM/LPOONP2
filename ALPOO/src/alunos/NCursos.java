@@ -17,8 +17,8 @@ import java.util.List;
  * @author igort_000
  */
 public class NCursos {
-    private final String INSERT = "INSERT INTO CURSO(nome_curso)  VALUES (?)";
-    private final String LIST = "SELECT * FROM CURSO";
+    private final String INSERT = "INSERT INTO CURSOS(nome_curso)  VALUES (?)";
+    private final String LIST = "SELECT * FROM CURSOS";
     
     public void addCurso(ECursos curso){
          Connection conexao = null;
