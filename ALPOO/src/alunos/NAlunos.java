@@ -173,13 +173,13 @@ public class NAlunos {
         }
     }
 
-    public void excluiAluno(EAluno aluno) {
+    public void excluiAluno(String ra) {
         PreparedStatement pstm = null;
         Connection con = null;
         try {
             con = new ConnectionFactory2().getConnection();
             pstm = con.prepareStatement(DELETE);
-            pstm.setString(1, aluno.getRa());
+            pstm.setString(1, ra);
             pstm.execute();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

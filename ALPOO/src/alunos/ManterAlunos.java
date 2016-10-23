@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -16,11 +18,11 @@ import javax.swing.JComboBox;
  */
 public class ManterAlunos extends javax.swing.JFrame {
 
+    //ComboBox
     public JComboBox getCbxUFNasc() {
         return cbxUFNasc;
     }
 
-    
     public JComboBox getCbxCidadeAtual() {
         return cbxCidadeAtual;
     }
@@ -32,15 +34,16 @@ public class ManterAlunos extends javax.swing.JFrame {
     public JComboBox getCbxUF() {
         return cbxUF;
     }
-    
+
     public JComboBox getCbxCurso() {
-        return this.cbxCurso;
+        return cbxCurso;
     }
 
     public void setCbxCurso(JComboBox cbxCurso) {
         this.cbxCurso = cbxCurso;
     }
 
+    //Buttons
     public JButton getBtnAlterar() {
         return btnAlterar;
     }
@@ -65,32 +68,50 @@ public class ManterAlunos extends javax.swing.JFrame {
         return btnSair;
     }
 
-    public JButton getBtnConstultar() {
+    public JButton getBtnConsultar() {
         return btnConsultar;
     }
 
-    public String getRA() {
-        return this.txtRA.getText();
+    public JButton getBtnAddCurso() {
+        return btnAddCurso;
     }
 
-    public void setRA(String ra) {
-        this.txtRA.setText(ra);
+    //JFormattedTextField
+    public JFormattedTextField getTxtCEP() {
+        return txtCEP;
     }
 
-    public void setNome(String nome) {
-        this.txtNomeAluno.setText(nome);
+    public JFormattedTextField getTxtDataMatricula() {
+        return txtDataMatricula;
     }
 
-    public void setRua(String rua) {
-        this.txtRua.setText(rua);
+    public JFormattedTextField getTxtDataNasc() {
+        return txtDataNasc;
     }
 
-    public void setSetor(String setor) {
-        this.txtSetor.setText(setor);
+    //JTextField
+    public JTextField getTxtNomeAluno() {
+        return txtNomeAluno;
     }
 
-    public void setCep(String cep) {
-        this.txtCEP.setText(cep);
+    public JTextField getTxtNomeMae() {
+        return txtNomeMae;
+    }
+
+    public JTextField getTxtNomePai() {
+        return txtNomePai;
+    }
+
+    public JTextField getRA() {
+        return txtRA;
+    }
+
+    public JTextField getTxtRua() {
+        return txtRua;
+    }
+
+    public JTextField getTxtSetor() {
+        return txtSetor;
     }
 
     public void setDtNascimento(Date dt) {
@@ -98,21 +119,9 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.txtDataNasc.setText(f.format(dt));
     }
 
-    public void setNomeMae(String mae) {
-        this.txtNomeMae.setText(mae.trim());
-    }
-
-    public void setNomePai(String pai) {
-        this.txtNomePai.setText(pai.trim());
-    }
-
     public void setDtMatricula(Date dt) {
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
         this.txtDataMatricula.setText(f.format(dt));
-    }
-
-    public JButton getBtnAddCurso() {
-        return btnAddCurso;
     }
 
     public void initEvent() {
@@ -120,7 +129,7 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.btnConsultar.addActionListener(new ManterAlunosCtr(this));
         this.btnAlterar.addActionListener(new ManterAlunosCtr(this));
         this.btnIncluir.addActionListener(new ManterAlunosCtr(this));
-        this.btnIncluir.addActionListener(new ManterAlunosCtr(this));
+        this.btnExcluir.addActionListener(new ManterAlunosCtr(this));
         this.btnSair.addActionListener(new ManterAlunosCtr(this));
         this.btnAddCurso.addActionListener(new ManterAlunosCtr(this));
     }
@@ -619,4 +628,5 @@ public class ManterAlunos extends javax.swing.JFrame {
     private javax.swing.JTextField txtRua;
     private javax.swing.JTextField txtSetor;
     // End of variables declaration//GEN-END:variables
+
 }

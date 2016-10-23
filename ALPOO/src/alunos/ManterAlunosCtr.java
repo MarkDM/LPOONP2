@@ -19,20 +19,22 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
 
         if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
 
+            NAlunos na = new NAlunos();
+
         } else if (e.getSource() == this.manterAlunos.getBtnAlterar()) {
 
-        } else if (e.getSource() == this.manterAlunos.getBtnConstultar()) {
+        } else if (e.getSource() == this.manterAlunos.getBtnConsultar()) {
 
             NAlunos na = new NAlunos();
-            EAluno aluno = na.getAlunoByRa(manterAlunos.getRA());
-            this.manterAlunos.setRA(aluno.getRa());
-            this.manterAlunos.setNome(aluno.getNome());
-            this.manterAlunos.setRua(aluno.getEndereco().getRua());
-            this.manterAlunos.setSetor(aluno.getEndereco().getSetor());
-            this.manterAlunos.setCep(aluno.getEndereco().getCep());
+            EAluno aluno = na.getAlunoByRa(manterAlunos.getRA().getText());
+            this.manterAlunos.getRA().setText(aluno.getRa());
+            this.manterAlunos.getTxtNomeAluno().setText(aluno.getNome());
+            this.manterAlunos.getTxtRua().setText(aluno.getEndereco().getRua());
+            this.manterAlunos.getTxtSetor().setText(aluno.getEndereco().getSetor());
+            this.manterAlunos.getTxtCEP().setText(aluno.getEndereco().getCep());
             this.manterAlunos.setDtNascimento(aluno.getData_nascimento());
-            this.manterAlunos.setNomeMae(aluno.getNome_mae());
-            this.manterAlunos.setNomePai(aluno.getNome_pai());
+            this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae().trim());
+            this.manterAlunos.getTxtNomePai().setText(aluno.getNome_pai());
             this.manterAlunos.setDtMatricula(aluno.getData_matricula());
             this.manterAlunos.getCbxCurso().setSelectedItem(aluno.getCurso().getDescricao());
             this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento());
@@ -41,11 +43,32 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
 
         } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
 
-            NAlunos na = new NAlunos();
+            String ra = manterAlunos.getRA().getText();
+
+            if (!ra.equals("")) {
+                NAlunos na = new NAlunos();
+
+                int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o Aluno atual? ", "Exclusão de Aluno", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (option == 0) {
+
+                    try {
+                        na.excluiAluno(ra);
+                        JOptionPane.showMessageDialog(manterAlunos, "Aluno " + manterAlunos.getRA() + " foi excluido", "", JOptionPane.OK_OPTION);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(manterAlunos, "Nehum aluno para excluir, favor preencher o RA", "Erro", JOptionPane.OK_OPTION);
+            }
 
         } else if (e.getSource() == this.manterAlunos.getBtnSair()) {
             windowClosing(null);
+
         } else if (e.getSource() == this.manterAlunos.getBtnAddCurso()) {
+
             String nomeCurso = JOptionPane.showInputDialog(null, "Digite o nome do curso: ", "Cadastro Curso", JOptionPane.OK_CANCEL_OPTION);
             if (nomeCurso != null) {
                 try {
@@ -59,7 +82,20 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
+
         }
+    }
+
+    private void liberaExclusao(boolean value) {
+
+    }
+
+    private void liberaInclusao(boolean value) {
+
+    }
+
+    private void liberaAlteracao(boolean value) {
+
     }
 
     private void listarCursos() {
@@ -69,25 +105,23 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
             this.manterAlunos.getCbxCurso().addItem(curso.getDescricao());
         }
     }
-    
-    private void listarCidadesUfs(){
+
+    private void listarCidadesUfs() {
         this.manterAlunos.getCbxCidadeAtual().removeAllItems();
         this.manterAlunos.getCbxUF().removeAllItems();
         NEndereco enderecoDao = new NEndereco();
-        
-        for(ECidades cidade : enderecoDao.listarCidades()) {
+
+        for (ECidades cidade : enderecoDao.listarCidades()) {
             this.manterAlunos.getCbxCidadeAtual().addItem(cidade.getNome());
             this.manterAlunos.getCbxCidadeNasc().addItem(cidade.getNome());
         }
-        
-        for(EUnidadeFederativa uf : enderecoDao.listarUF() ) {
-            
+
+        for (EUnidadeFederativa uf : enderecoDao.listarUF()) {
+
             this.manterAlunos.getCbxUF().addItem(uf.getUf_sigla());
             this.manterAlunos.getCbxUFNasc().addItem(uf.getUf_sigla());
         }
     }
-    
-
 
     @Override
     public void windowOpened(WindowEvent e) {
