@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class ManterAlunosCtr implements WindowListener, ActionListener {
@@ -20,6 +25,32 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
         if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
 
             NAlunos na = new NAlunos();
+            EAluno aluno = new EAluno();
+            ECidades cidadeResidencia = new ECidades();
+            ECidades cidadeNascimento = new ECidades();
+            ECursos curso = new ECursos();
+
+            cidadeResidencia.setId(Integer.parseInt(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString().substring(0, 1)));
+            cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString().substring(5));
+            cidadeNascimento.setId(Integer.parseInt(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString().substring(0, 1)));
+            cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString().substring(5));
+
+            aluno.setNome(this.manterAlunos.getTxtNomeMae().getText());
+            aluno.setRa(this.manterAlunos.getRA().getText());
+            aluno.setCep(this.manterAlunos.getTxtCEP().getText());
+            aluno.setCidade(cidadeResidencia);
+            aluno.setCidade_nascimento(cidadeNascimento);
+            aluno.setCurso(curso);
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            Date dataMatricula;
+            try {
+                dataMatricula = f.parse(this.manterAlunos.getTxtDataMatricula().getText());
+                aluno.setData_matricula(dataMatricula);
+            } catch (ParseException ex) {
+                Logger.getLogger(ManterAlunosCtr.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
 
         } else if (e.getSource() == this.manterAlunos.getBtnAlterar()) {
 
@@ -101,7 +132,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
         this.manterAlunos.getCbxCurso().removeAllItems();
         NCursos cursoDao = new NCursos();
         for (ECursos curso : cursoDao.listar()) {
-            this.manterAlunos.getCbxCurso().addItem(curso.getDescricao());
+            this.manterAlunos.getCbxCurso().addItem(curso.toString());
         }
     }
 
@@ -111,8 +142,8 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
         NEndereco enderecoDao = new NEndereco();
 
         for (ECidades cidade : enderecoDao.listarCidades()) {
-            this.manterAlunos.getCbxCidadeAtual().addItem(cidade.getNome());
-            this.manterAlunos.getCbxCidadeNasc().addItem(cidade.getNome());
+            this.manterAlunos.getCbxCidadeAtual().addItem(cidade.toString());
+            this.manterAlunos.getCbxCidadeNasc().addItem(cidade.toString());
         }
 
         for (EUnidadeFederativa uf : enderecoDao.listarUF()) {

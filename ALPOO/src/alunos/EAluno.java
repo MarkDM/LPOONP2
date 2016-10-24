@@ -139,14 +139,6 @@ public class EAluno {
         this.data_matricula = data_matricula;
     }
 
-    
-    
-
-    @Override
-    public String toString() {
-        return "EAluno{" + "ra=" + ra + ", nome=" + nome + ", data_nascimento=" + data_nascimento + ", cidade_nascimento=" + cidade_nascimento + ", uf_de_nascimento=" + uf_de_nascimento + ", nome_pai=" + nome_pai + ", nome_mae=" + nome_mae + '}';
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;

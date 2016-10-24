@@ -71,7 +71,7 @@ public class NAlunos {
             pstm.setString(10, aluno.getRua());
             pstm.setString(11, aluno.getSetor());
             pstm.setString(12, aluno.getCep());
-            pstm.setInt(13,aluno.getCidade().getId());
+            pstm.setInt(13, aluno.getCidade().getId());
             pstm.setString(14, aluno.getUf_de_nascimento());
 
             pstm.execute();
@@ -94,6 +94,15 @@ public class NAlunos {
                 pstm.setDate(3, (Date) aluno.getData_nascimento());
                 pstm.setString(4, aluno.getNome_pai());
                 pstm.setString(5, aluno.getNome_mae());
+                pstm.setString(6, aluno.getCidade_nascimento().getNome());
+                pstm.setString(7, aluno.getUf());
+                pstm.setInt(8, aluno.getCurso().getId());
+                pstm.setDate(9, (Date) aluno.getData_matricula());
+                pstm.setString(10, aluno.getRua());
+                pstm.setString(11, aluno.getSetor());
+                pstm.setString(12, aluno.getCep());
+                pstm.setInt(13, aluno.getCidade().getId());
+                pstm.setString(14, aluno.getUf_de_nascimento());
 
                 pstm.execute();
             } catch (Exception e) {

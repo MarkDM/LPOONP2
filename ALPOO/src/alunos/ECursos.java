@@ -19,6 +19,11 @@ public class ECursos {
     public ECursos() {
     }
 
+    @Override
+    public String toString(){
+        return id + " - " + descricao;
+    }
+    
     public int getId() {
         return id;
     }
@@ -39,8 +44,4 @@ public class ECursos {
         }
     }
 
-    @Override
-    public String toString() {
-        return "ECursos{" + "id=" + id + ", descricao=" + descricao + '}';
-    }
 }

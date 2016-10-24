@@ -15,6 +15,11 @@ public class ECidades {
     private String nome;
     private String UF;
 
+     @Override
+    public String toString() {
+        return id + " - " + this.nome;
+    }
+    
     public ECidades() {
     }
 
