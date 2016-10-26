@@ -10,11 +10,10 @@ import java.util.List;
 
 public class NAlunos {
 
-    private final String INSERT = "INSERT INTO alunos(\n"
-            + "            ra, nome, dt_nascimento, nome_pai, nome_mae, cidade_nascimento, \n"
-            + "            uf_sigla, curso_id, data_matricula, rua, setor, cep, cidade_id, \n"
-            + "            uf_nascimento_sigla)\n"
-            + "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+    private final String INSERT = "INSERT INTO alunos(ra, nome, dt_nascimento, nome_pai, nome_mae, data_matricula, cidade_nascimento, endereco_id, curso_id)\n"
+            + "    VALUES (?, ?, ?, ?, ?, ?,?\n"
+            + "		, select MAX(endereco_id) from endereco\n"
+            + "		, select MAX(curso_id) from curso);";
 
     private final String UPDATE = "UPDATE ALUNOS SET NOME = ?,DT_NASCIMENTO = ?,CIDADE_NASCIMENTO= ?"
             + "UF_NASCIMENTO = ?,NOME_PAI = ?,NOME_MAE = ?"
@@ -48,6 +47,7 @@ public class NAlunos {
     }
 
     public void adicionarAluno(EAluno aluno) {
+        NCidades cidadeDao = new NCidades();
         Connection conexao = null;
         PreparedStatement pstm = null;
         try {
@@ -58,16 +58,11 @@ public class NAlunos {
             pstm.setDate(3, (Date) aluno.getData_nascimento());
             pstm.setString(4, aluno.getNome_pai());
             pstm.setString(5, aluno.getNome_mae());
-            pstm.setString(6, aluno.getCidade_nascimento().getNome());
-            pstm.setString(7, aluno.getUf());
-            pstm.setInt(8, aluno.getCurso().getId());
-            pstm.setDate(9, (Date) aluno.getData_matricula());
-            pstm.setString(10, aluno.getRua());
-            pstm.setString(11, aluno.getSetor());
-            pstm.setString(12, aluno.getCep());
-            pstm.setInt(13, aluno.getCidade().getId());
-            pstm.setString(14, aluno.getUf_de_nascimento());
-
+            pstm.setDate(6, (Date) aluno.getData_matricula());
+            //********** pega ID da cidade
+            pstm.setInt(7, cidadeDao.getIdByNome(aluno.getCidade_nascimento().getNome()));
+            //*********Inserir Endereco
+            //********Inserir Curso
             pstm.execute();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

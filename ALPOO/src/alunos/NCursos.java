@@ -21,7 +21,7 @@ public class NCursos {
     private final String LIST = "SELECT * FROM CURSO";
     
     public void addCurso(ECursos curso){
-         Connection conexao = null;
+        Connection conexao = null;
         PreparedStatement pstm = null;
         try {
             conexao = new ConnectionFactory2().getConnection();
