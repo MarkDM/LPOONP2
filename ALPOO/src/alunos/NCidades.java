@@ -15,9 +15,11 @@ import java.sql.ResultSet;
  */
 public class NCidades {
 
-    private final String getIdByNome = "select cidade_id from cidades where cidade_nome = ?";
+    private final String getIdByNome = "select cidade_id from cidades\n"
+            + "where retira_acentuacao(UPPER(trim(both cidade_nome))) = ?";
 
     public int getIdByNome(String nomeCidade) {
+        nomeCidade = UtilStr.semAcento(nomeCidade);
         int idCidade;
         Connection conexao = null;
         PreparedStatement pstm = null;
@@ -27,10 +29,10 @@ public class NCidades {
             pstm = conexao.prepareStatement(getIdByNome);
             pstm.setString(1, nomeCidade);
             rs = pstm.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 idCidade = rs.getInt("cidade_id");
-            }else{
+            } else {
                 throw new RuntimeException("Cidade não encontrada!");
             }
             return idCidade;
