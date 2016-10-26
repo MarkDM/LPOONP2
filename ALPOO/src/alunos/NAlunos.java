@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package alunos;
 
 import java.sql.Connection;
@@ -27,28 +22,27 @@ public class NAlunos {
 
     private final String DELETE = "DELETE FROM ALUNOS WHERE RA = ?";
 
-    private final String LIST = "select al.ra\n"
-            + "       ,al.nome\n"
-            + "       ,al.dt_nascimento\n"
-            + "       ,al.nome_pai\n"
-            + "       ,al.nome_mae\n"
-            + "       ,cid.cidade_nome   as Cidade_Atual\n"
-            + "       ,cidn.cidade_nome as CidadeNascimento\n"
-            + "       ,ufn.uf_sigla      as UF_Nascimento_sigla\n"
-            + "       ,uf.uf_sigla       as UF_Atual_sigla\n"
-            + "       ,al.rua\n"
-            + "       ,al.setor\n"
-            + "       ,al.cep\n"
-            + "       ,c.nome_curso      as Curso\n"
-            + "       ,al.data_matricula\n"
-            + "from alunos as al\n"
-            + "inner join cidades as cid on al.cidade_id = cid.cidade_id \n"
-            + "inner join cidades as cidn on al.cidade_nascimento = cidn.cidade_id\n"
-            + "inner join unidade_federativa as ufn on ufn.uf_sigla = al.uf_nascimento_sigla\n"
-            + "inner join unidade_federativa as uf on uf.uf_sigla = al.uf_sigla\n"
-            + "inner join cursos as c on c.curso_id = al.curso_id";
+    private final String LIST = "select 	a.*\n"
+            + "      , cid.cidade_id as cidade_nasc_id\n"
+            + "      , cid.cidade_nome as cidadenascimento\n"
+            + "      , cid.uf_sigla as uf_nascimento_sigla\n"
+            + "      , c.*\n"
+            + "      , e.endereco_id\n"
+            + "      , e.rua\n"
+            + "      , e.setor\n"
+            + "      , e.cep\n"
+            + "      , e.uf_sigla uf_atual_sigla\n"
+            + "      , cd.cidade_id \n"
+            + "      , cd.cidade_nome as cidade_atual\n"
+            + "      , uf.uf_descricao\n"
+            + "from alunos a\n"
+            + "	left join curso c on c.curso_id = a.curso_id\n"
+            + "	left join endereco e on e.endereco_id = a.endereco_id\n"
+            + "	inner join cidades cid on cid.cidade_id = a.cidade_nascimento\n"
+            + "	inner join cidades cd on cd.cidade_id = e.cidade_id\n"
+            + "	inner join unidade_federativa uf on uf.uf_sigla = e.uf_sigla";
 
-    private final String FIND = this.LIST + " WHERE RA = ? order by al.nome";
+    private final String FIND = this.LIST + " WHERE RA = ? order by a.nome";
 
     public NAlunos() {
     }
@@ -133,11 +127,9 @@ public class NAlunos {
                 aluno.setRa(rs.getString("ra"));
                 aluno.setNome(rs.getString("nome"));
                 aluno.setData_nascimento(rs.getDate("dt_nascimento"));
-                cidadeNascimento.setNome(rs.getString("cidadenascimento"));
+                cidadeNascimento.setNome(rs.getString("cidade_nascimento"));
                 cidadeResidencia.setNome(rs.getString("cidade_atual"));
                 aluno.setUf_de_nascimento(rs.getString("uf_nascimento_sigla"));
-                aluno.setNome_pai(rs.getString("nome_pai"));
-                aluno.setNome_mae(rs.getString("nome_mae"));
                 aluno.setData_matricula(rs.getDate("data_matricula"));
                 aluno.setNome_pai(rs.getString("nome_pai"));
                 aluno.setNome_mae(rs.getString("nome_mae"));
@@ -145,7 +137,7 @@ public class NAlunos {
                 aluno.setCep(rs.getString("cep"));
                 aluno.setUf(rs.getString("uf_atual_sigla"));
                 aluno.setSetor(rs.getString("setor"));
-                curso.setDescricao(rs.getString("curso"));
+                curso.setDescricao(rs.getString("nome_curso"));
                 aluno.setCidade_nascimento(cidadeNascimento);
                 aluno.setCidade(cidadeResidencia);
                 aluno.setCurso(curso);
@@ -192,7 +184,7 @@ public class NAlunos {
             aluno.setCep(rs.getString("cep"));
             aluno.setUf(rs.getString("uf_atual_sigla"));
             aluno.setSetor(rs.getString("setor"));
-            curso.setDescricao(rs.getString("curso"));
+            curso.setDescricao(rs.getString("nome_curso"));
             aluno.setCidade_nascimento(cidadeNascimento);
             aluno.setCidade(cidadeResidencia);
             //aluno.setEndereco(endereco);
