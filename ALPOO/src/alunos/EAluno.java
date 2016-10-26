@@ -18,12 +18,8 @@ public class EAluno {
     private String uf_de_nascimento;
     private String nome_pai;
     private String nome_mae;
-    private String rua;
-    private String setor;
-    private String cep;
-    private String uf;
     private ECidades cidade;
-    //private EEndereco endereco;
+    private EEndereco endereco;
     private ECursos curso;
     private Date data_matricula;
 
@@ -81,38 +77,6 @@ public class EAluno {
 
     public void setNome_mae(String nome_mae) {
         this.nome_mae = nome_mae;
-    }
-
-    public String getRua() {
-        return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua = rua;
-    }
-
-    public String getSetor() {
-        return setor;
-    }
-
-    public void setSetor(String setor) {
-        this.setor = setor;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
     }
 
     public ECidades getCidade() {
