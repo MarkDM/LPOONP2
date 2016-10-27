@@ -11,10 +11,11 @@ package alunos;
  */
 public class EEndereco {
 
+    private int id;
     private String rua;
     private String setor;
     private String cep;
-    private String cidade;
+    private ECidades cidade;
     private String UF;
 
     public String getRua() {
@@ -41,11 +42,11 @@ public class EEndereco {
         this.cep = cep;
     }
 
-    public String getCidade() {
+    public ECidades getCidade() {
         return cidade;
     }
 
-    public void setCidade(String cidade) {
+    public void setCidade(ECidades cidade) {
         this.cidade = cidade;
     }
 
@@ -57,4 +58,13 @@ public class EEndereco {
         this.UF = UF;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
 }

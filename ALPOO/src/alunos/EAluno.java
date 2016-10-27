@@ -6,7 +6,6 @@
 package alunos;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class EAluno {
@@ -15,7 +14,6 @@ public class EAluno {
     private String nome;
     private Date data_nascimento;
     private ECidades cidade_nascimento;
-    private String uf_de_nascimento;
     private String nome_pai;
     private String nome_mae;
     private ECidades cidade;
@@ -53,14 +51,6 @@ public class EAluno {
 
     public void setCidade_nascimento(ECidades cidade_nascimento) {
         this.cidade_nascimento = cidade_nascimento;
-    }
-
-    public String getUf_de_nascimento() {
-        return uf_de_nascimento;
-    }
-
-    public void setUf_de_nascimento(String uf_de_nascimento) {
-        this.uf_de_nascimento = uf_de_nascimento;
     }
 
     public String getNome_pai() {
@@ -103,6 +93,16 @@ public class EAluno {
         this.data_matricula = data_matricula;
     }
 
+    public EEndereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(EEndereco endereco) {
+        this.endereco = endereco;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -110,7 +110,6 @@ public class EAluno {
         hash = 71 * hash + Objects.hashCode(this.nome);
         hash = 71 * hash + Objects.hashCode(this.data_nascimento);
         hash = 71 * hash + Objects.hashCode(this.cidade_nascimento);
-        hash = 71 * hash + Objects.hashCode(this.uf_de_nascimento);
         hash = 71 * hash + Objects.hashCode(this.nome_pai);
         hash = 71 * hash + Objects.hashCode(this.nome_mae);
         return hash;
@@ -135,9 +134,6 @@ public class EAluno {
             return false;
         }
         if (!Objects.equals(this.cidade_nascimento, other.cidade_nascimento)) {
-            return false;
-        }
-        if (!Objects.equals(this.uf_de_nascimento, other.uf_de_nascimento)) {
             return false;
         }
         if (!Objects.equals(this.nome_pai, other.nome_pai)) {

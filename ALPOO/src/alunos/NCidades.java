@@ -8,6 +8,7 @@ package alunos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -36,7 +37,7 @@ public class NCidades {
                 throw new RuntimeException("Cidade não encontrada!");
             }
             return idCidade;
-        } catch (Exception e) {
+        } catch (SQLException | RuntimeException e) {
             throw new RuntimeException(e);
         } finally {
             ConnectionFactory2.fechaConexao(conexao, pstm, rs);
