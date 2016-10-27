@@ -37,7 +37,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
 
             aluno.setNome(this.manterAlunos.getTxtNomeMae().getText());
             aluno.setRa(this.manterAlunos.getRA().getText());
-            aluno.setCep(this.manterAlunos.getTxtCEP().getText());
+            aluno.getEndereco().setCep(this.manterAlunos.getTxtCEP().getText());
             aluno.setCidade(cidadeResidencia);
             aluno.setCidade_nascimento(cidadeNascimento);
             aluno.setCurso(curso);
@@ -60,16 +60,16 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
             EAluno aluno = na.getAlunoByRa(manterAlunos.getRA().getText());
             this.manterAlunos.getRA().setText(aluno.getRa());
             this.manterAlunos.getTxtNomeAluno().setText(aluno.getNome());
-            this.manterAlunos.getTxtRua().setText(aluno.getRua());
-            this.manterAlunos.getTxtSetor().setText(aluno.getSetor());
-            this.manterAlunos.getTxtCEP().setText(aluno.getCep());
+            this.manterAlunos.getTxtRua().setText(aluno.getEndereco().getRua());
+            this.manterAlunos.getTxtSetor().setText(aluno.getEndereco().getSetor());
+            this.manterAlunos.getTxtCEP().setText(aluno.getEndereco().getCep());
             this.manterAlunos.setDtNascimento(aluno.getData_nascimento());
-            this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae().trim());
+            this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae());
             this.manterAlunos.getTxtNomePai().setText(aluno.getNome_pai());
             this.manterAlunos.setDtMatricula(aluno.getData_matricula());
             this.manterAlunos.getCbxCurso().setSelectedItem(aluno.getCurso().getDescricao());
-            this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento());
-            this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getCidade());
+            this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento().getNome());
+            this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getCidade().getNome());
 
         } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
 
@@ -132,7 +132,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
         this.manterAlunos.getCbxCurso().removeAllItems();
         NCursos cursoDao = new NCursos();
         for (ECursos curso : cursoDao.listar()) {
-            this.manterAlunos.getCbxCurso().addItem(curso.toString());
+            this.manterAlunos.getCbxCurso().addItem(curso.getDescricao());
         }
     }
 
@@ -142,8 +142,8 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
         NEndereco enderecoDao = new NEndereco();
 
         for (ECidades cidade : enderecoDao.listarCidades()) {
-            this.manterAlunos.getCbxCidadeAtual().addItem(cidade.toString());
-            this.manterAlunos.getCbxCidadeNasc().addItem(cidade.toString());
+            this.manterAlunos.getCbxCidadeAtual().addItem(cidade.getNome());
+            this.manterAlunos.getCbxCidadeNasc().addItem(cidade.getNome());
         }
 
         for (EUnidadeFederativa uf : enderecoDao.listarUF()) {
