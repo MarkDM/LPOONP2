@@ -111,7 +111,7 @@ public class NAlunos {
     }
 
     public List<EAluno> listaAlunos() {
-        List<EAluno> alunos = new ArrayList<EAluno>();
+        List<EAluno> alunos = new ArrayList<>();
         Connection con = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -131,18 +131,18 @@ public class NAlunos {
                 aluno.setNome_pai(rs.getString("nome_pai"));
                 aluno.setNome_mae(rs.getString("nome_mae"));
                 aluno.setData_matricula(rs.getDate("data_matricula"));
-                
+
                 //setando cidade nascimento
                 cidadeNascimento.setId(rs.getInt("cidade_nasc_id"));
                 cidadeNascimento.setNome(rs.getString("cidade_nascimento"));
                 cidadeNascimento.setUF(rs.getString("uf_nascimento_sigla"));
                 aluno.setCidade_nascimento(cidadeNascimento);
-                
+
                 //setando curso
                 curso.setId(rs.getInt("curso_id"));
                 curso.setDescricao(rs.getString("nome_curso"));
                 aluno.setCurso(curso);
-                
+
                 //setando endereço
                 endereco.setId(rs.getInt("endereco_id"));
                 endereco.setRua(rs.getString("rua"));
@@ -155,7 +155,7 @@ public class NAlunos {
                 cidadeAtual.setUF(rs.getString("uf_descricao"));
                 endereco.setCidade(cidadeAtual);
                 aluno.setEndereco(endereco);
-               
+
                 alunos.add(aluno);
             }
         } catch (SQLException ex) {
@@ -168,9 +168,8 @@ public class NAlunos {
 
     public EAluno getAlunoByRa(String ra) {
         EAluno aluno = new EAluno();
+        EEndereco endereco = new EEndereco();
         ECidades cidadeNascimento = new ECidades();
-        ECidades cidadeResidencia = new ECidades();
-        //EEndereco endereco = new EEndereco();
         ECursos curso = new ECursos();
         PreparedStatement pstm = null;
         Connection con = null;
@@ -183,26 +182,37 @@ public class NAlunos {
 
             rs.next();
 
+            //setando aluno
             aluno.setRa(rs.getString("ra"));
             aluno.setNome(rs.getString("nome"));
             aluno.setData_nascimento(rs.getDate("dt_nascimento"));
-            cidadeNascimento.setNome(rs.getString("cidadenascimento"));
-            cidadeResidencia.setNome(rs.getString("cidade_atual"));
-            aluno.setUf_de_nascimento(rs.getString("uf_nascimento_sigla"));
             aluno.setNome_pai(rs.getString("nome_pai"));
             aluno.setNome_mae(rs.getString("nome_mae"));
             aluno.setData_matricula(rs.getDate("data_matricula"));
-            aluno.setNome_pai(rs.getString("nome_pai"));
-            aluno.setNome_mae(rs.getString("nome_mae"));
-            aluno.setRua(rs.getString("rua"));
-            aluno.setCep(rs.getString("cep"));
-            aluno.setUf(rs.getString("uf_atual_sigla"));
-            aluno.setSetor(rs.getString("setor"));
-            curso.setDescricao(rs.getString("nome_curso"));
+
+            //setando cidade nascimento
+            cidadeNascimento.setId(rs.getInt("cidade_nasc_id"));
+            cidadeNascimento.setNome(rs.getString("cidade_nascimento"));
+            cidadeNascimento.setUF(rs.getString("uf_nascimento_sigla"));
             aluno.setCidade_nascimento(cidadeNascimento);
-            aluno.setCidade(cidadeResidencia);
-            //aluno.setEndereco(endereco);
+
+            //setando curso
+            curso.setId(rs.getInt("curso_id"));
+            curso.setDescricao(rs.getString("nome_curso"));
             aluno.setCurso(curso);
+
+            //setando endereço
+            endereco.setId(rs.getInt("endereco_id"));
+            endereco.setRua(rs.getString("rua"));
+            endereco.setSetor(rs.getString("setor"));
+            endereco.setCep(rs.getString("cep"));
+            endereco.setUF(rs.getString("uf_atual_sigla"));
+            ECidades cidadeAtual = new ECidades();
+            cidadeAtual.setId(rs.getInt("cidade_id"));
+            cidadeAtual.setNome(rs.getString("cidade_atual"));
+            cidadeAtual.setUF(rs.getString("uf_descricao"));
+            endereco.setCidade(cidadeAtual);
+            aluno.setEndereco(endereco);
 
             return aluno;
         } catch (Exception e) {
