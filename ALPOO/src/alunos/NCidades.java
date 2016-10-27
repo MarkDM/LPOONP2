@@ -20,7 +20,7 @@ public class NCidades {
             + "where retira_acentuacao(UPPER(trim(both cidade_nome))) = ?";
 
     public int getIdByNome(String nomeCidade) {
-        nomeCidade = UtilStr.semAcento(nomeCidade);
+        nomeCidade = UtilStr.semAcento(nomeCidade).toUpperCase();
         int idCidade;
         Connection conexao = null;
         PreparedStatement pstm = null;

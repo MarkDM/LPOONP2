@@ -29,16 +29,17 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
             ECidades cidadeResidencia = new ECidades();
             ECidades cidadeNascimento = new ECidades();
             ECursos curso = new ECursos();
-
-            cidadeResidencia.setId(Integer.parseInt(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString().substring(0, 1)));
-            cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString().substring(5));
-            cidadeNascimento.setId(Integer.parseInt(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString().substring(0, 1)));
-            cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString().substring(5));
+            NCidades cidadeDao = new NCidades();
+            
+            cidadeResidencia.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString()));
+            cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString());
+            cidadeNascimento.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString()));
+            cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString());
 
             aluno.setNome(this.manterAlunos.getTxtNomeMae().getText());
             aluno.setRa(this.manterAlunos.getRA().getText());
             aluno.getEndereco().setCep(this.manterAlunos.getTxtCEP().getText());
-            aluno.setCidade(cidadeResidencia);
+            aluno.getEndereco().setCidade(cidadeResidencia);
             aluno.setCidade_nascimento(cidadeNascimento);
             aluno.setCurso(curso);
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
@@ -64,12 +65,12 @@ public class ManterAlunosCtr implements WindowListener, ActionListener {
             this.manterAlunos.getTxtSetor().setText(aluno.getEndereco().getSetor());
             this.manterAlunos.getTxtCEP().setText(aluno.getEndereco().getCep());
             this.manterAlunos.setDtNascimento(aluno.getData_nascimento());
-            this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae());
+            this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae().trim());
             this.manterAlunos.getTxtNomePai().setText(aluno.getNome_pai());
             this.manterAlunos.setDtMatricula(aluno.getData_matricula());
             this.manterAlunos.getCbxCurso().setSelectedItem(aluno.getCurso().getDescricao());
             this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento().getNome());
-            this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getCidade().getNome());
+            this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getEndereco().getCidade().getNome());
 
         } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
 
