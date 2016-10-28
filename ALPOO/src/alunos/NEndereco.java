@@ -52,10 +52,10 @@ public class NEndereco {
 
             if (rs.next()) {
                 idEndereco = rs.getInt("endereco_id");
-            } else {
-                throw new RuntimeException("Cidade não encontrada!");
+                return idEndereco;
+            } else{
+                throw new RuntimeException("Endereço não encontrado!");
             }
-            return idEndereco;
         } catch (SQLException | RuntimeException e) {
             throw new RuntimeException(e);
         } finally {

@@ -10,10 +10,11 @@ import java.util.List;
 
 public class NAlunos {
 
-    private final String INSERT = "INSERT INTO alunos(ra, nome, dt_nascimento, nome_pai, nome_mae, data_matricula, cidade_nascimento, endereco_id, curso_id)\n"
-            + "    VALUES (?, ?, ?, ?, ?, ?,?\n"
-            + "		, select MAX(endereco_id) from endereco\n"
-            + "		, select MAX(curso_id) from curso);";
+    private final String INSERT = "INSERT INTO alunos(ra, nome, dt_nascimento, nome_pai, nome_mae, data_matricula, cidade_nascimento, endereco_id, curso_id)\n" +
+"            VALUES (?, ?,?, ?, ?, ?, ?\n" +
+"                     , (select MAX(endereco_id) from endereco)\n" +
+"                     , ?\n" +
+"                 );";
 
     private final String UPDATE = "UPDATE alunos\n"
             + "   SET  nome=?, dt_nascimento=?, nome_pai=?, nome_mae=?, endereco_id=?, \n"
@@ -49,9 +50,14 @@ public class NAlunos {
 
     public void adicionarAluno(EAluno aluno) {
         NCidades cidadeDao = new NCidades();
+        NCursos cursoDao = new NCursos();
         Connection conexao = null;
         PreparedStatement pstm = null;
         try {
+            //*********Inserir Endereco
+            NEndereco enderecoDao = new NEndereco();
+            enderecoDao.addEndereco(aluno.getEndereco());
+            
             conexao = new ConnectionFactory2().getConnection();
             pstm = conexao.prepareStatement(INSERT);
             pstm.setString(1, aluno.getRa());
@@ -60,14 +66,8 @@ public class NAlunos {
             pstm.setString(4, aluno.getNome_pai());
             pstm.setString(5, aluno.getNome_mae());
             pstm.setDate(6, new java.sql.Date(aluno.getData_matricula().getTime()));
-            //********** pega ID da cidade
-            pstm.setInt(7, cidadeDao.getIdByNome(aluno.getCidade_nascimento().getNome()));
-            //*********Inserir Endereco
-            NEndereco enderecoDao = new NEndereco();
-            enderecoDao.addEndereco(aluno.getEndereco());
-            //********Inserir Curso
-            NCursos cursoDao = new NCursos();
-            cursoDao.addCurso(aluno.getCurso());
+            pstm.setInt(7, aluno.getCidade_nascimento().getId());
+            pstm.setInt(8, aluno.getCurso().getId());
             //*******Insere aluno com o ultimo endereco e curso
             pstm.execute();
         } catch (SQLException ex) {
@@ -215,7 +215,7 @@ public class NAlunos {
                 aluno.setEndereco(endereco);
 
                 return aluno;
-            }else{
+            } else {
                 throw new RuntimeException("Aluno não encontrado!");
             }
         } catch (Exception e) {

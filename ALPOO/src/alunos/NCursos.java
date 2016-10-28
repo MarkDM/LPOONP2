@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class NCursos {
 
-    private final String INSERT = "INSERT INTO CURSOS(nome_curso)  VALUES (?)";
+    private final String INSERT = "INSERT INTO CURSO(nome_curso)  VALUES (?)";
     private final String LIST = "SELECT * FROM CURSO";
     private final String GET_BY_NOME = "SELECT curso_id FROM curso\n"
             + "where UPPER(retira_acentuacao(trim(both  nome_curso))) = ?";

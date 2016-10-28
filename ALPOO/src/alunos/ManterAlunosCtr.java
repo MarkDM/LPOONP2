@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.ParseException;
@@ -27,7 +25,6 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
-
             try {
                 EAluno aluno = new EAluno();
                 ECidades cidadeResidencia = new ECidades();
@@ -50,7 +47,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
                 endereco.setRua(this.manterAlunos.getTxtRua().getText());
                 endereco.setSetor(this.manterAlunos.getTxtSetor().getText());
-                endereco.setCep(this.manterAlunos.getTxtCEP().getText());
+                endereco.setCep(this.manterAlunos.getTxtCEP().getText().replace(".", "").replace("-", ""));
                 endereco.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
                 cidadeResidencia.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString()));
                 cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString());
@@ -67,6 +64,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                 aluno.setCurso(curso);
                 alunoDao.adicionarAluno(aluno);
                 JOptionPane.showMessageDialog(null, "Aluno "+ aluno.getNome() + " adicionado com sucesso!");
+                limparCampos();
             } catch (ParseException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -135,6 +133,18 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
         }
     }
 
+    private void limparCampos(){
+        this.manterAlunos.getTxtRA().setText("");
+        this.manterAlunos.getTxtNomeAluno().setText("");
+        this.manterAlunos.getTxtDataNasc().setText("");
+        this.manterAlunos.getTxtRua().setText("");
+        this.manterAlunos.getTxtSetor().setText("");
+        this.manterAlunos.getTxtCEP().setText("");
+        this.manterAlunos.getTxtNomePai().setText("");
+        this.manterAlunos.getTxtNomeMae().setText("");
+        this.manterAlunos.getTxtDataMatricula().setText("");
+    }
+    
     private void listarCursos() {
         this.manterAlunos.getCbxCurso().removeAllItems();
         NCursos cursoDao = new NCursos();
