@@ -124,14 +124,24 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.txtDataMatricula.setText(f.format(dt));
     }
 
+    public JTextField getTxtRA() {
+        return txtRA;
+    }
+
+    public void setTxtRA(JTextField txtRA) {
+        this.txtRA = txtRA;
+    }
+
     public void initEvent() {
-        this.addWindowListener(new ManterAlunosCtr(this));
-        this.btnConsultar.addActionListener(new ManterAlunosCtr(this));
-        this.btnAlterar.addActionListener(new ManterAlunosCtr(this));
-        this.btnIncluir.addActionListener(new ManterAlunosCtr(this));
-        this.btnExcluir.addActionListener(new ManterAlunosCtr(this));
-        this.btnSair.addActionListener(new ManterAlunosCtr(this));
-        this.btnAddCurso.addActionListener(new ManterAlunosCtr(this));
+        ManterAlunosCtr control = new ManterAlunosCtr(this);
+        this.addWindowListener(control);
+        this.btnConsultar.addActionListener(control);
+        this.btnAlterar.addActionListener(control);
+        this.btnIncluir.addActionListener(control);
+        this.btnExcluir.addActionListener(control);
+        this.btnSair.addActionListener(control);
+        this.btnAddCurso.addActionListener(control);
+        this.txtRA.addKeyListener(control);
     }
 
     /**

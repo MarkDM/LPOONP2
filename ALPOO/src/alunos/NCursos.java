@@ -20,10 +20,10 @@ public class NCursos {
     private final String INSERT = "INSERT INTO CURSOS(nome_curso)  VALUES (?)";
     private final String LIST = "SELECT * FROM CURSO";
     private final String GET_BY_NOME = "SELECT curso_id FROM curso\n"
-            + "where retira_acentuacao(UPPER(trim(both nome_curso))) = ?";
+            + "where UPPER(retira_acentuacao(trim(both  nome_curso))) = ?";
 
     public int getIdByNome(String nomeCurso) {
-        nomeCurso = UtilStr.semAcento(nomeCurso);
+        nomeCurso = UtilStr.semAcento(nomeCurso).toUpperCase();
         int idCurso;
         Connection conexao = null;
         PreparedStatement pstm = null;

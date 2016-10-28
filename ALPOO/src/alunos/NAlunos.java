@@ -56,10 +56,10 @@ public class NAlunos {
             pstm = conexao.prepareStatement(INSERT);
             pstm.setString(1, aluno.getRa());
             pstm.setString(2, aluno.getNome());
-            pstm.setDate(3, (Date) aluno.getData_nascimento());
+            pstm.setDate(3, new java.sql.Date(aluno.getData_nascimento().getTime()));
             pstm.setString(4, aluno.getNome_pai());
             pstm.setString(5, aluno.getNome_mae());
-            pstm.setDate(6, (Date) aluno.getData_matricula());
+            pstm.setDate(6, new java.sql.Date(aluno.getData_matricula().getTime()));
             //********** pega ID da cidade
             pstm.setInt(7, cidadeDao.getIdByNome(aluno.getCidade_nascimento().getNome()));
             //*********Inserir Endereco
@@ -85,7 +85,7 @@ public class NAlunos {
                 con = new ConnectionFactory2().getConnection();
                 pstm = con.prepareStatement(UPDATE);
                 pstm.setString(1, aluno.getNome());
-                pstm.setDate(2, (Date) aluno.getData_nascimento());
+                pstm.setDate(2, new java.sql.Date(aluno.getData_nascimento().getTime()));
                 pstm.setString(3, aluno.getNome_pai());
                 pstm.setString(4, aluno.getNome_mae());
                 //*****Pega ID endereco
@@ -93,10 +93,10 @@ public class NAlunos {
                 pstm.setInt(5, enderecoDao.getIdEndereco(aluno.getEndereco()));
                 //*****Pega ID cidade
                 NCidades cidadesDao = new NCidades();
-                pstm.setInt(6, cidadesDao.getIdByNome(aluno.getCidade().getNome()));
+                pstm.setInt(6, cidadesDao.getIdByNome(aluno.getCidade_nascimento().getNome()));
                 //*****Pega ID curso
                 NCursos cursosDao = new NCursos();
-                pstm.setInt(7, cursosDao.getIdByNome(aluno.getCidade().getNome()));
+                pstm.setInt(7, cursosDao.getIdByNome(aluno.getCurso().getDescricao()));
                 //*****
                 pstm.setDate(9, (Date) aluno.getData_matricula());
                 pstm.execute();
@@ -180,41 +180,44 @@ public class NAlunos {
             pstm.setString(1, ra);
             rs = pstm.executeQuery();
 
-            rs.next();
+            if (rs.next()) {
 
-            //setando aluno
-            aluno.setRa(rs.getString("ra"));
-            aluno.setNome(rs.getString("nome"));
-            aluno.setData_nascimento(rs.getDate("dt_nascimento"));
-            aluno.setNome_pai(rs.getString("nome_pai"));
-            aluno.setNome_mae(rs.getString("nome_mae"));
-            aluno.setData_matricula(rs.getDate("data_matricula"));
+                //setando aluno
+                aluno.setRa(rs.getString("ra"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setData_nascimento(rs.getDate("dt_nascimento"));
+                aluno.setNome_pai(rs.getString("nome_pai"));
+                aluno.setNome_mae(rs.getString("nome_mae"));
+                aluno.setData_matricula(rs.getDate("data_matricula"));
 
-            //setando cidade nascimento
-            cidadeNascimento.setId(rs.getInt("cidade_nasc_id"));
-            cidadeNascimento.setNome(rs.getString("cidade_nascimento"));
-            cidadeNascimento.setUF(rs.getString("uf_nascimento_sigla"));
-            aluno.setCidade_nascimento(cidadeNascimento);
+                //setando cidade nascimento
+                cidadeNascimento.setId(rs.getInt("cidade_nasc_id"));
+                cidadeNascimento.setNome(rs.getString("cidade_nascimento"));
+                cidadeNascimento.setUF(rs.getString("uf_nascimento_sigla"));
+                aluno.setCidade_nascimento(cidadeNascimento);
 
-            //setando curso
-            curso.setId(rs.getInt("curso_id"));
-            curso.setDescricao(rs.getString("nome_curso"));
-            aluno.setCurso(curso);
+                //setando curso
+                curso.setId(rs.getInt("curso_id"));
+                curso.setDescricao(rs.getString("nome_curso"));
+                aluno.setCurso(curso);
 
-            //setando endereço
-            endereco.setId(rs.getInt("endereco_id"));
-            endereco.setRua(rs.getString("rua"));
-            endereco.setSetor(rs.getString("setor"));
-            endereco.setCep(rs.getString("cep"));
-            endereco.setUF(rs.getString("uf_atual_sigla"));
-            ECidades cidadeAtual = new ECidades();
-            cidadeAtual.setId(rs.getInt("cidade_id"));
-            cidadeAtual.setNome(rs.getString("cidade_atual"));
-            cidadeAtual.setUF(rs.getString("uf_descricao"));
-            endereco.setCidade(cidadeAtual);
-            aluno.setEndereco(endereco);
+                //setando endereço
+                endereco.setId(rs.getInt("endereco_id"));
+                endereco.setRua(rs.getString("rua"));
+                endereco.setSetor(rs.getString("setor"));
+                endereco.setCep(rs.getString("cep"));
+                endereco.setUF(rs.getString("uf_atual_sigla"));
+                ECidades cidadeAtual = new ECidades();
+                cidadeAtual.setId(rs.getInt("cidade_id"));
+                cidadeAtual.setNome(rs.getString("cidade_atual"));
+                cidadeAtual.setUF(rs.getString("uf_descricao"));
+                endereco.setCidade(cidadeAtual);
+                aluno.setEndereco(endereco);
 
-            return aluno;
+                return aluno;
+            }else{
+                throw new RuntimeException("Aluno não encontrado!");
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {

@@ -16,8 +16,7 @@ import java.sql.SQLException;
  */
 public class NCidades {
 
-    private final String getIdByNome = "select cidade_id from cidades\n"
-            + "where retira_acentuacao(UPPER(trim(both cidade_nome))) = ?";
+    private final String getIdByNome = "select cidade_id from cidades where UPPER(retira_acentuacao(trim(both  cidade_nome))) = ?";
 
     public int getIdByNome(String nomeCidade) {
         nomeCidade = UtilStr.semAcento(nomeCidade).toUpperCase();

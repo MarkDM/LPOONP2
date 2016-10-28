@@ -16,7 +16,6 @@ public class EAluno {
     private ECidades cidade_nascimento;
     private String nome_pai;
     private String nome_mae;
-    private ECidades cidade;
     private EEndereco endereco;
     private ECursos curso;
     private Date data_matricula;
@@ -68,15 +67,7 @@ public class EAluno {
     public void setNome_mae(String nome_mae) {
         this.nome_mae = nome_mae;
     }
-
-    public ECidades getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(ECidades cidade) {
-        this.cidade = cidade;
-    }
-
+    
     public ECursos getCurso() {
         return curso;
     }
