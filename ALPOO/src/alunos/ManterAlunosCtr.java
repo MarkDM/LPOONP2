@@ -157,6 +157,35 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
         } else if (e.getSource() == this.manterAlunos.getMiCidades()) {
         } else if (e.getSource() == this.manterAlunos.getMiUf()) {
+            try {
+                String nomeUf = JOptionPane.showInputDialog(null, "Digite a Sigla da UF", "Cadastro UF", JOptionPane.OK_CANCEL_OPTION);
+                if (nomeUf != null) {
+                    boolean ufExiste = false;
+                    nomeUf = nomeUf.trim();
+                    EUnidadeFederativa uf = new EUnidadeFederativa();
+                    for (Estados estado : Estados.values()) {
+                        if (nomeUf.toUpperCase().equals(estado.name())) {
+                            ufExiste = true;
+                            uf.setUf_sigla(estado.name());
+                            uf.setUf_descricao(estado.toString());
+                            break;
+                        }
+                    }
+
+                    if (ufExiste) {
+                        NUnidadeFederativa ufDao = new NUnidadeFederativa();
+                        ufDao.addUF(uf);
+                        getCidadesufs();
+                        listarCidadesUfsNasc();
+                        JOptionPane.showMessageDialog(null, "UF adicionado com sucesso!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "UF digitada não existe!");
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
         }
     }
 
