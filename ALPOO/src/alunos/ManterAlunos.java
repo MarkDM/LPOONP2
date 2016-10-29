@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 
 /**
@@ -132,6 +133,22 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.txtRA = txtRA;
     }
 
+    public JMenuItem getMiCidades() {
+        return miCidades;
+    }
+
+    public void setMiCidades(JMenuItem miCidades) {
+        this.miCidades = miCidades;
+    }
+
+    public JMenuItem getMiUf() {
+        return miUf;
+    }
+
+    public void setMiUf(JMenuItem miUf) {
+        this.miUf = miUf;
+    }
+
     public void initEvent() {
         ManterAlunosCtr control = new ManterAlunosCtr(this);
         this.addWindowListener(control);
@@ -142,6 +159,12 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.btnSair.addActionListener(control);
         this.btnAddCurso.addActionListener(control);
         this.txtRA.addKeyListener(control);
+        this.txtRA.addFocusListener(control);
+        this.txtRua.addFocusListener(control);
+        this.txtSetor.addFocusListener(control);
+        this.txtCEP.addFocusListener(control);
+        this.miCidades.addActionListener(control);
+        this.miUf.addActionListener(control);
     }
 
     /**
@@ -204,9 +227,8 @@ public class ManterAlunos extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCidades = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        menuUF = new javax.swing.JMenuItem();
-        menuCursos = new javax.swing.JMenuItem();
+        miCidades = new javax.swing.JMenuItem();
+        miUf = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -275,9 +297,9 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         txtNomeAluno.setName("txtNome"); // NOI18N
 
-        jLabel3.setText("Nome do Aluno");
+        jLabel3.setText("Nome do Aluno*:");
 
-        jLabel1.setText("Ra");
+        jLabel1.setText("Ra* :");
 
         txtRA.setName("txtRA"); // NOI18N
 
@@ -288,7 +310,7 @@ public class ManterAlunos extends javax.swing.JFrame {
         }
         txtDataNasc.setName("jftDataMatricula"); // NOI18N
 
-        jLabel6.setText("Data de Nascimento");
+        jLabel6.setText("Data de Nascimento*:");
 
         jLabel7.setText("Rua");
 
@@ -298,7 +320,7 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         txtSetor.setName("txtRA"); // NOI18N
 
-        jLabel9.setText("Cidade de Nascimento");
+        jLabel9.setText("Cidade de Nascimento*:");
 
         jLabel11.setText("Cidade atual");
 
@@ -316,11 +338,11 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         txtNomePai.setName("txtRA"); // NOI18N
 
-        jLabel15.setText("Nome da Mãe");
+        jLabel15.setText("Nome da Mãe*:");
 
         txtNomeMae.setName("txtRA"); // NOI18N
 
-        jLabel16.setText("UF de Nascimento");
+        jLabel16.setText("UF de Nascimento*:");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -440,9 +462,9 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados do Curso"));
 
-        jLabel4.setText("Curso");
+        jLabel4.setText("Curso*:");
 
-        jLabel5.setText("Data da Matrícula");
+        jLabel5.setText("Data da Matrícula*:");
 
         try {
             txtDataMatricula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -495,19 +517,16 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         menuCidades.setText("Cadastro");
 
-        jMenuItem2.setText("Cidades");
-        menuCidades.add(jMenuItem2);
+        miCidades.setText("Cidades");
+        menuCidades.add(miCidades);
 
-        menuUF.setText("Unidades Federativas");
-        menuUF.addActionListener(new java.awt.event.ActionListener() {
+        miUf.setText("Unidades Federativas");
+        miUf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuUFActionPerformed(evt);
+                miUfActionPerformed(evt);
             }
         });
-        menuCidades.add(menuUF);
-
-        menuCursos.setText("Cursos");
-        menuCidades.add(menuCursos);
+        menuCidades.add(miUf);
 
         jMenuBar1.add(menuCidades);
 
@@ -550,9 +569,9 @@ public class ManterAlunos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuUFActionPerformed
+    private void miUfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miUfActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_menuUFActionPerformed
+    }//GEN-LAST:event_miUfActionPerformed
 
     /**
      * @param args the command line arguments
@@ -621,13 +640,12 @@ public class ManterAlunos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JMenu menuCidades;
-    private javax.swing.JMenuItem menuCursos;
-    private javax.swing.JMenuItem menuUF;
+    private javax.swing.JMenuItem miCidades;
+    private javax.swing.JMenuItem miUf;
     private javax.swing.JFormattedTextField txtCEP;
     private javax.swing.JFormattedTextField txtDataMatricula;
     private javax.swing.JFormattedTextField txtDataNasc;

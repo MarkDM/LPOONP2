@@ -9,9 +9,9 @@ import java.sql.SQLException;
 public class ConnectionFactory2 {
 
     private String driver = "org.postgresql.Driver"; // "com.mysql.jdbc.Driver"; org.postgresql.Driver
-    private String url = "jdbc:postgresql://hj06vm/alpoo";    // "jdbc:mysql://localhost/locaCar"; jdbc:postgresql://localhost/aula_neri
+    private String url = "jdbc:postgresql://localhost/alpoo";    // "jdbc:mysql://localhost/locaCar"; jdbc:postgresql://localhost/aula_neri
     private String usuario = "postgres";// "root";  postgres
-    private String senha = "9001";  // "dmc123"; dmc123
+    private String senha = "dmc123";  // "dmc123"; dmc123
     private static Connection conexao;
 
     public String getDriver() {

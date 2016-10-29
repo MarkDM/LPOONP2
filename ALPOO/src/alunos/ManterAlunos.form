@@ -28,23 +28,18 @@
             <Property name="text" type="java.lang.String" value="Cadastro"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="miCidades">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cidades"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuUF">
+            <MenuItem class="javax.swing.JMenuItem" name="miUf">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Unidades Federativas"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuUFActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miUfActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuCursos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cursos"/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -387,12 +382,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nome do Aluno"/>
+            <Property name="text" type="java.lang.String" value="Nome do Aluno*:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ra"/>
+            <Property name="text" type="java.lang.String" value="Ra* :"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtRA">
@@ -410,7 +405,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Data de Nascimento"/>
+            <Property name="text" type="java.lang.String" value="Data de Nascimento*:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
@@ -435,7 +430,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cidade de Nascimento"/>
+            <Property name="text" type="java.lang.String" value="Cidade de Nascimento*:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbxCidadeNasc">
@@ -493,7 +488,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nome da M&#xe3;e"/>
+            <Property name="text" type="java.lang.String" value="Nome da M&#xe3;e*:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNomeMae">
@@ -510,7 +505,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel16">
           <Properties>
-            <Property name="text" type="java.lang.String" value="UF de Nascimento"/>
+            <Property name="text" type="java.lang.String" value="UF de Nascimento*:"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -565,12 +560,12 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Curso"/>
+            <Property name="text" type="java.lang.String" value="Curso*:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Data da Matr&#xed;cula"/>
+            <Property name="text" type="java.lang.String" value="Data da Matr&#xed;cula*:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="txtDataMatricula">

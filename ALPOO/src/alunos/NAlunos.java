@@ -10,11 +10,14 @@ import java.util.List;
 
 public class NAlunos {
 
-    private final String INSERT = "INSERT INTO alunos(ra, nome, dt_nascimento, nome_pai, nome_mae, data_matricula, cidade_nascimento, endereco_id, curso_id)\n" +
-"            VALUES (?, ?,?, ?, ?, ?, ?\n" +
-"                     , (select MAX(endereco_id) from endereco)\n" +
-"                     , ?\n" +
-"                 );";
+    private final String INSERT = "INSERT INTO alunos(ra, nome, dt_nascimento, nome_pai, nome_mae, data_matricula, cidade_nascimento, endereco_id, curso_id)\n"
+            + "            VALUES (?, ?,?, ?, ?, ?, ?\n"
+            + "                     , (select MAX(endereco_id) from endereco)\n"
+            + "                     , ?\n"
+            + "                 );";
+
+    private final String INSERT_SEM_ENDERECO = "INSERT INTO alunos(ra, nome, dt_nascimento, nome_pai, nome_mae, data_matricula, cidade_nascimento, endereco_id, curso_id)\n"
+            + "            VALUES (?, ?,?, ?, ?, ?, ?, NULL, ?);";
 
     private final String UPDATE = "UPDATE alunos\n"
             + "   SET  nome=?, dt_nascimento=?, nome_pai=?, nome_mae=?, endereco_id=?, \n"
@@ -35,31 +38,37 @@ public class NAlunos {
             + "      , e.uf_sigla as uf_atual_sigla\n"
             + "      , cd.cidade_id \n"
             + "      , cd.cidade_nome as cidade_atual\n"
-            + "      , uf.uf_descricao\n"
+            + "      , cd.uf_sigla as uf_descricao\n"
             + "from alunos a\n"
-            + "	left join curso c on c.curso_id = a.curso_id\n"
+            + "	inner join curso c on c.curso_id = a.curso_id\n"
             + "	left join endereco e on e.endereco_id = a.endereco_id\n"
             + "	inner join cidades cid on cid.cidade_id = a.cidade_nascimento\n"
-            + "	inner join cidades cd on cd.cidade_id = e.cidade_id\n"
-            + "	inner join unidade_federativa uf on uf.uf_sigla = e.uf_sigla";
+            + "	left join cidades cd on cd.cidade_id = e.cidade_id\n";
 
     private final String FIND = this.LIST + " WHERE RA = ? order by a.nome";
 
     public NAlunos() {
     }
 
-    public void adicionarAluno(EAluno aluno) {
+    public void adicionarAluno(EAluno aluno, boolean adiconarEndereco) {
         NCidades cidadeDao = new NCidades();
         NCursos cursoDao = new NCursos();
         Connection conexao = null;
         PreparedStatement pstm = null;
         try {
-            //*********Inserir Endereco
-            NEndereco enderecoDao = new NEndereco();
-            enderecoDao.addEndereco(aluno.getEndereco());
-            
+            if (adiconarEndereco) {
+                //*********Inserir Endereco
+                NEndereco enderecoDao = new NEndereco();
+                enderecoDao.addEndereco(aluno.getEndereco());
+            }
             conexao = new ConnectionFactory2().getConnection();
-            pstm = conexao.prepareStatement(INSERT);
+            if (adiconarEndereco) {
+                //*******Insere aluno com o ultimo endereco 
+                pstm = conexao.prepareStatement(INSERT);
+            } else {
+                //*******Insere aluno com o  endereco null
+                pstm = conexao.prepareStatement(INSERT_SEM_ENDERECO);
+            }
             pstm.setString(1, aluno.getRa());
             pstm.setString(2, aluno.getNome());
             pstm.setDate(3, new java.sql.Date(aluno.getData_nascimento().getTime()));
@@ -68,13 +77,17 @@ public class NAlunos {
             pstm.setDate(6, new java.sql.Date(aluno.getData_matricula().getTime()));
             pstm.setInt(7, aluno.getCidade_nascimento().getId());
             pstm.setInt(8, aluno.getCurso().getId());
-            //*******Insere aluno com o ultimo endereco e curso
+
             pstm.execute();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         } finally {
             ConnectionFactory2.fechaConexao(conexao, pstm);
         }
+    }
+
+    public void adicionarAluno(EAluno aluno) {
+        adicionarAluno(aluno, true);
     }
 
     public void alteraAluno(EAluno aluno) {
