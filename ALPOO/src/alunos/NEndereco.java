@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -18,8 +16,10 @@ import java.util.List;
  */
 public class NEndereco {
 
-    private final String INSERT_CIDADE = "INSERT INTO CIDADES (cidade_nome,uf_sigla) values (?,?)";
-   
+    private final String UPDATE = "UPDATE endereco\n"
+            + "   SET rua=?, setor=?, cep=?,cidade_id=?, uf_sigla=?\n"
+            + " WHERE endereco_id = ?;";
+
     private final String INSERT = "INSERT INTO endereco(rua, setor, cep, cidade_id, uf_sigla)\n"
             + "    VALUES (?, ?, ?, ?, ?);";
     private final String GET_ID = "SELECT endereco_id \n"
@@ -28,15 +28,35 @@ public class NEndereco {
             + "  and retira_acentuacao(UPPER(TRIM(BOTH setor))) = ?\n"
             + "  and retira_acentuacao(UPPER(TRIM(BOTH cep))) =   ?\n"
             + "  and retira_acentuacao(UPPER(TRIM(BOTH uf_sigla))) = ?";
-    
-    public int getIdEndereco(EEndereco endereco){
+
+    public void alterar(EEndereco endereco) {
+        Connection conexao = null;
+        PreparedStatement pstm = null;
+        try {
+            conexao = new ConnectionFactory2().getConnection();
+            pstm = conexao.prepareStatement(UPDATE);
+            pstm.setString(1, endereco.getRua());
+            pstm.setString(2, endereco.getSetor());
+            pstm.setString(3, endereco.getCep());
+            pstm.setInt(4, endereco.getCidade().getId());
+            pstm.setString(5, endereco.getUF());
+            pstm.setInt(6, endereco.getId());
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectionFactory2.fechaConexao(conexao, pstm);
+        }
+    }
+
+    public int getIdEndereco(EEndereco endereco) {
         String rua = UtilStr.semAcento(endereco.getRua()).toUpperCase().trim();
         String setor = UtilStr.semAcento(endereco.getSetor()).toUpperCase().trim();
         String cep = UtilStr.semAcento(endereco.getCep()).toUpperCase().trim();
         String uf_sigla = UtilStr.semAcento(endereco.getUF()).toUpperCase().trim();
-        
+
         int idEndereco;
-        
+
         Connection conexao = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -52,7 +72,7 @@ public class NEndereco {
             if (rs.next()) {
                 idEndereco = rs.getInt("endereco_id");
                 return idEndereco;
-            } else{
+            } else {
                 throw new RuntimeException("Endereço não encontrado!");
             }
         } catch (SQLException | RuntimeException e) {

@@ -20,9 +20,14 @@ public class NAlunos {
             + "            VALUES (?, ?,?, ?, ?, ?, ?, NULL, ?);";
 
     private final String UPDATE = "UPDATE alunos\n"
-            + "   SET  nome=?, dt_nascimento=?, nome_pai=?, nome_mae=?, endereco_id=?, \n"
-            + "       cidade_nascimento=?, curso_id=?, data_matricula=?\n"
-            + " WHERE ra = ?;";
+            + "   SET nome=?, dt_nascimento=?, nome_pai=?, nome_mae=?, \n"
+            + "       cidade_nascimento=?, curso_id=?, data_matricula=?, endereco_id=?\n"
+            + " WHERE ra=?;";
+
+    private final String UPDATE_SEM_ENDERECO = "UPDATE alunos\n"
+            + "   SET nome=?, dt_nascimento=?, nome_pai=?, nome_mae=?, \n"
+            + "       cidade_nascimento=?, curso_id=?, data_matricula=?, endereco_id=NULL\n"
+            + " WHERE ra=?;";
 
     private final String DELETE = "DELETE FROM ALUNOS WHERE RA = ?";
 
@@ -90,33 +95,43 @@ public class NAlunos {
         adicionarAluno(aluno, true);
     }
 
-    public void alteraAluno(EAluno aluno) {
+    public void alteraAluno(EAluno aluno, boolean alterarEndereco) {
         if (aluno != null) {
-            Connection con = null;
+            Connection conexao = null;
             PreparedStatement pstm = null;
             try {
-                con = new ConnectionFactory2().getConnection();
-                pstm = con.prepareStatement(UPDATE);
+                if (alterarEndereco) {
+                    //*********altera Endereco
+                    NEndereco enderecoDao = new NEndereco();
+                    enderecoDao.alterar(aluno.getEndereco());
+                }
+                conexao = new ConnectionFactory2().getConnection();
+                if (alterarEndereco) {
+                    //*******altera aluno com o ultimo endereco 
+                    pstm = conexao.prepareStatement(UPDATE);
+                } else {
+                    //*******altera aluno com o  endereco null
+                    pstm = conexao.prepareStatement(UPDATE_SEM_ENDERECO);
+                }
+
                 pstm.setString(1, aluno.getNome());
                 pstm.setDate(2, new java.sql.Date(aluno.getData_nascimento().getTime()));
                 pstm.setString(3, aluno.getNome_pai());
                 pstm.setString(4, aluno.getNome_mae());
-                //*****Pega ID endereco
-                NEndereco enderecoDao = new NEndereco();
-                pstm.setInt(5, enderecoDao.getIdEndereco(aluno.getEndereco()));
-                //*****Pega ID cidade
-                NCidades cidadesDao = new NCidades();
-                pstm.setInt(6, cidadesDao.getIdByNome(aluno.getCidade_nascimento().getNome()));
-                //*****Pega ID curso
-                NCursos cursosDao = new NCursos();
-                pstm.setInt(7, cursosDao.getIdByNome(aluno.getCurso().getDescricao()));
-                //*****
-                pstm.setDate(9, (Date) aluno.getData_matricula());
+                pstm.setInt(5, aluno.getCidade_nascimento().getId());
+                 pstm.setInt(6, aluno.getCurso().getId());
+                pstm.setDate(7, new java.sql.Date(aluno.getData_matricula().getTime()));
+                if (alterarEndereco) {
+                    pstm.setInt(8, aluno.getEndereco().getId());
+                    pstm.setString(9, aluno.getRa());
+                } else {
+                      pstm.setString(8, aluno.getRa());
+                }
                 pstm.execute();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             } finally {
-                ConnectionFactory2.fechaConexao(con, pstm);
+                ConnectionFactory2.fechaConexao(conexao, pstm);
             }
         } else {
             throw new RuntimeException("Aluno Nulo");

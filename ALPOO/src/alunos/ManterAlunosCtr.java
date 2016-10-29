@@ -87,9 +87,61 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             }
         } else if (e.getSource() == this.manterAlunos.getBtnAlterar()) {
             if (!consultou) {
-                JOptionPane.showMessageDialog(null, "É Consultar sua RA para Alterar seu cadastro!");
+                JOptionPane.showMessageDialog(null, "É preciso Consultar sua RA para Alterar seu cadastro!");
             } else {
-                //altera
+                if (!CamposObrigatorioPreenchido()) {
+                    JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatorios! (*)");
+                } else if (enderecoObrigatorio) {
+                    JOptionPane.showMessageDialog(null, "Preencha todos os cmpos referente a endereço!");
+                } else {
+                    try {
+                        EAluno aluno = new EAluno();
+                        ECidades cidadeResidencia = new ECidades();
+                        ECidades cidadeNascimento = new ECidades();
+                        EEndereco endereco = new EEndereco();
+                        ECursos curso = new ECursos();
+                        NCursos cursoDao = new NCursos();
+                        NCidades cidadeDao = new NCidades();
+                        NAlunos alunoDao = new NAlunos();
+
+                        aluno.setRa(this.manterAlunos.getRA().getText());
+                        aluno.setNome(this.manterAlunos.getTxtNomeAluno().getText());
+
+                        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+                        aluno.setData_nascimento(f.parse(this.manterAlunos.getTxtDataNasc().getText()));
+                        cidadeNascimento.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString()));
+                        cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString());
+                        cidadeNascimento.setUF(this.manterAlunos.getCbxUFNasc().getSelectedItem().toString());
+                        aluno.setCidade_nascimento(cidadeNascimento);
+
+                        if (enderecoObrigatorio) {
+                            endereco.setRua(this.manterAlunos.getTxtRua().getText());
+                            endereco.setSetor(this.manterAlunos.getTxtSetor().getText());
+                            endereco.setCep(this.manterAlunos.getTxtCEP().getText().replace(".", "").replace("-", ""));
+                            endereco.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
+                            cidadeResidencia.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString()));
+                            cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString());
+                            cidadeResidencia.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
+                            endereco.setCidade(cidadeResidencia);
+                            NEndereco enderecoDao = new NEndereco();
+                            endereco.setId(enderecoDao.getIdEndereco(endereco));
+                            aluno.setEndereco(endereco);
+                        }
+
+                        aluno.setNome_pai(this.manterAlunos.getTxtNomePai().getText());
+                        aluno.setNome_mae(this.manterAlunos.getTxtNomeMae().getText());
+                        aluno.setData_matricula(f.parse(this.manterAlunos.getTxtDataMatricula().getText()));
+
+                        curso.setId(cursoDao.getIdByNome(this.manterAlunos.getCbxCurso().getSelectedItem().toString()));
+                        curso.setDescricao(this.manterAlunos.getCbxCurso().getSelectedItem().toString());
+                        aluno.setCurso(curso);
+                        alunoDao.alteraAluno(aluno, enderecoObrigatorio);
+                        JOptionPane.showMessageDialog(null, "Aluno " + aluno.getNome() + " alterado com sucesso!");
+                        limparCampos();
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }
             }
         } else if (e.getSource() == this.manterAlunos.getBtnConsultar()) {
             NAlunos na = new NAlunos();
@@ -302,7 +354,19 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
     @Override
     public void focusGained(FocusEvent fe) {
-        if (fe.getSource() == this.manterAlunos.getTxtRua() || fe.getSource() == this.manterAlunos.getTxtSetor()
+
+    }
+
+    @Override
+    public void focusLost(FocusEvent fe) {
+        //Verificação no Campo RA
+        if (fe.getSource() == this.manterAlunos.getTxtRA()) {
+            if (this.manterAlunos.getTxtRA().getText().length() < 7) {
+                JOptionPane.showMessageDialog(null, "Campo RA deve conter 7 digitos!");
+                this.manterAlunos.getTxtRA().requestFocus();
+            }
+            //Verificação nos campos De endereço 
+        } else if (fe.getSource() == this.manterAlunos.getTxtRua() || fe.getSource() == this.manterAlunos.getTxtSetor()
                 || fe.getSource() == this.manterAlunos.getTxtCEP()) {
 
             JTextField campo = (JTextField) fe.getSource();
@@ -311,16 +375,6 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             if (!"".equals(texto.trim())) {
                 enderecoObrigatorio = true;
                 listarCidadesUfs();
-            }
-        }
-    }
-
-    @Override
-    public void focusLost(FocusEvent fe) {
-        if (fe.getSource() == this.manterAlunos.getTxtRA()) {
-            if (this.manterAlunos.getTxtRA().getText().length() < 7) {
-                JOptionPane.showMessageDialog(null, "Campo RA deve conter 7 digitos!");
-                this.manterAlunos.getTxtRA().requestFocus();
             }
         }
     }
