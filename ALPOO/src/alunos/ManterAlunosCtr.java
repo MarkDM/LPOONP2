@@ -156,6 +156,27 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             }
 
         } else if (e.getSource() == this.manterAlunos.getMiCidades()) {
+            try {
+                String cidadeUf = JOptionPane.showInputDialog(null, "Digite a Sigla da UF e depois o Nome da cidade", "Cadastro Cidade", JOptionPane.OK_CANCEL_OPTION);
+                if (cidadeUf != null) {
+                    String ufDigitada = cidadeUf.trim().substring(0, 2);
+                    Estados estado = validaUF(ufDigitada);
+                    if (estado != null) {
+                        String cidadeNome = cidadeUf.substring(2, cidadeUf.length()).trim();
+                        ECidades cidade = new ECidades();
+                        cidade.setNome(cidadeNome);
+                        cidade.setUF(estado.name());
+
+                        NCidades cidadeDao = new NCidades();
+                        cidadeDao.addCidade(cidade);
+                        JOptionPane.showMessageDialog(null, "Cidade " + cidadeNome + " adicionado com sucesso!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "UF digitada não existe ou não esta cadastrada!");
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         } else if (e.getSource() == this.manterAlunos.getMiUf()) {
             try {
                 String nomeUf = JOptionPane.showInputDialog(null, "Digite a Sigla da UF", "Cadastro UF", JOptionPane.OK_CANCEL_OPTION);
@@ -163,13 +184,12 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                     boolean ufExiste = false;
                     nomeUf = nomeUf.trim();
                     EUnidadeFederativa uf = new EUnidadeFederativa();
-                    for (Estados estado : Estados.values()) {
-                        if (nomeUf.toUpperCase().equals(estado.name())) {
-                            ufExiste = true;
-                            uf.setUf_sigla(estado.name());
-                            uf.setUf_descricao(estado.toString());
-                            break;
-                        }
+
+                    Estados estado = validaUF(nomeUf);
+                    if (estado != null) {
+                        ufExiste = true;
+                        uf.setUf_sigla(estado.name());
+                        uf.setUf_descricao(estado.toString());
                     }
 
                     if (ufExiste) {
@@ -177,7 +197,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                         ufDao.addUF(uf);
                         getCidadesufs();
                         listarCidadesUfsNasc();
-                        JOptionPane.showMessageDialog(null, "UF adicionado com sucesso!");
+                        JOptionPane.showMessageDialog(null, "UF " + estado.name() + " " + estado.getEstado() + " adicionado com sucesso!");
                     } else {
                         JOptionPane.showMessageDialog(null, "UF digitada não existe!");
                     }
@@ -187,6 +207,15 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             }
 
         }
+    }
+
+    private Estados validaUF(String uf) {
+        for (Estados estado : Estados.values()) {
+            if (uf.toUpperCase().equals(estado.name())) {
+                return estado;
+            }
+        }
+        return null;
     }
 
     /**
@@ -221,9 +250,9 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
     }
 
     private void getCidadesufs() {
-        NEndereco enderecoDao = new NEndereco();
-        cidades = enderecoDao.listarCidades();
-        ufs = enderecoDao.listarUF();
+        NCidades cidadesDao = new NCidades();
+        cidades = cidadesDao.listarCidades();
+        ufs = cidadesDao.listarUF();
     }
 
     private void listarCidadesUfs() {

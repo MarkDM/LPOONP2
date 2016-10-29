@@ -26,7 +26,7 @@ public class ECidades {
     public ECidades(int id, String nome, String UF) {
         this.id = id;
         this.nome = nome;
-        this.UF = UF;
+       // this.UF = UF;
     }
     
     
