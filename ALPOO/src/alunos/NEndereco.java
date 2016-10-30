@@ -17,17 +17,12 @@ import java.sql.ResultSet;
 public class NEndereco {
 
     private final String UPDATE = "UPDATE endereco\n"
-            + "   SET rua=?, setor=?, cep=?,cidade_id=?, uf_sigla=?\n"
+            + "   SET rua=?, setor=?, cep=?,cidade_id=?\n"
             + " WHERE endereco_id = ?;";
 
-    private final String INSERT = "INSERT INTO endereco(rua, setor, cep, cidade_id, uf_sigla)\n"
-            + "    VALUES (?, ?, ?, ?, ?);";
-    private final String GET_ID = "SELECT endereco_id \n"
-            + "	FROM endereco \n"
-            + "WHERE retira_acentuacao(UPPER(TRIM(BOTH rua))) = ?\n"
-            + "  and retira_acentuacao(UPPER(TRIM(BOTH setor))) = ?\n"
-            + "  and retira_acentuacao(UPPER(TRIM(BOTH cep))) =   ?\n"
-            + "  and retira_acentuacao(UPPER(TRIM(BOTH uf_sigla))) = ?";
+    private final String INSERT = "INSERT INTO endereco(rua, setor, cep, cidade_id)\n"
+            + "    VALUES (?, ?, ?, ?);";
+    private final String GET_ID = "select max(ENDERECO_ID) as endereco_id from endereco ";
 
     private final String DELETE = "DELETE FROM public.endereco\n"
             + " WHERE endereco_id = ?;";
@@ -42,8 +37,7 @@ public class NEndereco {
             pstm.setString(2, endereco.getSetor());
             pstm.setString(3, endereco.getCep());
             pstm.setInt(4, endereco.getCidade().getId());
-            pstm.setString(5, endereco.getUF());
-            pstm.setInt(6, endereco.getId());
+            pstm.setInt(5, endereco.getId());
             pstm.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -52,12 +46,7 @@ public class NEndereco {
         }
     }
 
-    public int getIdEndereco(EEndereco endereco) {
-        String rua = UtilStr.semAcento(endereco.getRua()).toUpperCase().trim();
-        String setor = UtilStr.semAcento(endereco.getSetor()).toUpperCase().trim();
-        String cep = UtilStr.semAcento(endereco.getCep()).toUpperCase().trim();
-        String uf_sigla = UtilStr.semAcento(endereco.getUF()).toUpperCase().trim();
-
+    public int getUltimoIdEndereco() {   
         int idEndereco;
 
         Connection conexao = null;
@@ -66,10 +55,6 @@ public class NEndereco {
         try {
             conexao = new ConnectionFactory2().getConnection();
             pstm = conexao.prepareStatement(GET_ID);
-            pstm.setString(1, rua);
-            pstm.setString(2, setor);
-            pstm.setString(3, cep);
-            pstm.setString(4, uf_sigla);
             rs = pstm.executeQuery();
 
             if (rs.next()) {
@@ -96,7 +81,6 @@ public class NEndereco {
             pstm.setString(2, endereco.getSetor());
             pstm.setString(3, endereco.getCep());
             pstm.setInt(4, endereco.getCidade().getId());
-            pstm.setString(5, endereco.getUF());
             pstm.execute();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

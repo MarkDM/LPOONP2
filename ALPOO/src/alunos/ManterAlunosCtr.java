@@ -23,6 +23,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
     List<ECidades> cidades = new ArrayList<>();
     List<EUnidadeFederativa> ufs = new ArrayList<>();
     int idEnderecoAlunoConsultado = -1;
+    int indexRegistro = -1;
 
     public ManterAlunosCtr(ManterAlunos manterAlunos) {
         this.manterAlunos = manterAlunos;
@@ -39,46 +40,13 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatorios! (*)");
             } else if (enderecoObrigatorio && !CamposEnderecoPreenchido()) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos referente a endereço!");
+            } else if (consultou) {
+                JOptionPane.showMessageDialog(null, "Você não pode incluir um aluno ja cadastroda! Que tal alterar?!");
             } else {
                 try {
-                    EAluno aluno = new EAluno();
-                    ECidades cidadeResidencia = new ECidades();
-                    ECidades cidadeNascimento = new ECidades();
-                    EEndereco endereco = new EEndereco();
-                    ECursos curso = new ECursos();
-                    NCursos cursoDao = new NCursos();
-                    NCidades cidadeDao = new NCidades();
+                    EAluno aluno = pegarAlunoDaTela();
                     NAlunos alunoDao = new NAlunos();
 
-                    aluno.setRa(this.manterAlunos.getRA().getText());
-                    aluno.setNome(this.manterAlunos.getTxtNomeAluno().getText());
-
-                    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-                    aluno.setData_nascimento(f.parse(this.manterAlunos.getTxtDataNasc().getText()));
-                    cidadeNascimento.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString()));
-                    cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString());
-                    cidadeNascimento.setUF(this.manterAlunos.getCbxUFNasc().getSelectedItem().toString());
-                    aluno.setCidade_nascimento(cidadeNascimento);
-
-                    if (enderecoObrigatorio) {
-                        endereco.setRua(this.manterAlunos.getTxtRua().getText());
-                        endereco.setSetor(this.manterAlunos.getTxtSetor().getText());
-                        endereco.setCep(this.manterAlunos.getTxtCEP().getText().replace(".", "").replace("-", ""));
-                        endereco.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
-                        cidadeResidencia.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString()));
-                        cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString());
-                        cidadeResidencia.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
-                        endereco.setCidade(cidadeResidencia);
-                        aluno.setEndereco(endereco);
-                    }
-
-                    aluno.setNome_pai(this.manterAlunos.getTxtNomePai().getText());
-                    aluno.setNome_mae(this.manterAlunos.getTxtNomeMae().getText());
-                    aluno.setData_matricula(f.parse(this.manterAlunos.getTxtDataMatricula().getText()));
-
-                    curso.setId(cursoDao.getIdByNome(this.manterAlunos.getCbxCurso().getSelectedItem().toString()));
-                    curso.setDescricao(this.manterAlunos.getCbxCurso().getSelectedItem().toString());
-                    aluno.setCurso(curso);
                     alunoDao.adicionarAluno(aluno, enderecoObrigatorio);
                     JOptionPane.showMessageDialog(null, "Aluno " + aluno.getNome() + " adicionado com sucesso!");
                     limparCampos();
@@ -96,47 +64,8 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                     JOptionPane.showMessageDialog(null, "Preencha todos os cmpos referente a endereço!");
                 } else {
                     try {
-                        EAluno aluno = new EAluno();
-                        ECidades cidadeResidencia = new ECidades();
-                        ECidades cidadeNascimento = new ECidades();
-                        EEndereco endereco = new EEndereco();
-                        ECursos curso = new ECursos();
-                        NCursos cursoDao = new NCursos();
-                        NCidades cidadeDao = new NCidades();
                         NAlunos alunoDao = new NAlunos();
-
-                        aluno.setRa(this.manterAlunos.getRA().getText());
-                        aluno.setNome(this.manterAlunos.getTxtNomeAluno().getText());
-
-                        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-                        aluno.setData_nascimento(f.parse(this.manterAlunos.getTxtDataNasc().getText()));
-                        cidadeNascimento.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString()));
-                        cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString());
-                        cidadeNascimento.setUF(this.manterAlunos.getCbxUFNasc().getSelectedItem().toString());
-                        aluno.setCidade_nascimento(cidadeNascimento);
-
-                        if (enderecoObrigatorio) {
-                            endereco.setRua(this.manterAlunos.getTxtRua().getText());
-                            endereco.setSetor(this.manterAlunos.getTxtSetor().getText());
-                            endereco.setCep(this.manterAlunos.getTxtCEP().getText().replace(".", "").replace("-", ""));
-                            endereco.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
-                            cidadeResidencia.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString()));
-                            cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString());
-                            cidadeResidencia.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
-                            endereco.setCidade(cidadeResidencia);
-                            NEndereco enderecoDao = new NEndereco();
-                            int idEndereco = enderecoDao.getIdEndereco(endereco);
-                            endereco.setId(idEndereco);
-                            aluno.setEndereco(endereco);
-                        }
-
-                        aluno.setNome_pai(this.manterAlunos.getTxtNomePai().getText());
-                        aluno.setNome_mae(this.manterAlunos.getTxtNomeMae().getText());
-                        aluno.setData_matricula(f.parse(this.manterAlunos.getTxtDataMatricula().getText()));
-
-                        curso.setId(cursoDao.getIdByNome(this.manterAlunos.getCbxCurso().getSelectedItem().toString()));
-                        curso.setDescricao(this.manterAlunos.getCbxCurso().getSelectedItem().toString());
-                        aluno.setCurso(curso);
+                        EAluno aluno = pegarAlunoDaTela();
                         alunoDao.alteraAluno(aluno, enderecoObrigatorio);
                         JOptionPane.showMessageDialog(null, "Aluno " + aluno.getNome() + " alterado com sucesso!");
                         limparCampos();
@@ -149,22 +78,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             NAlunos na = new NAlunos();
             try {
                 EAluno aluno = na.getAlunoByRa(manterAlunos.getRA().getText());
-                this.manterAlunos.getRA().setText(aluno.getRa());
-                this.manterAlunos.getTxtNomeAluno().setText(aluno.getNome());
-                this.manterAlunos.getTxtRua().setText(aluno.getEndereco().getRua());
-                this.manterAlunos.getTxtSetor().setText(aluno.getEndereco().getSetor());
-                this.manterAlunos.getTxtCEP().setText(aluno.getEndereco().getCep());
-                this.manterAlunos.setDtNascimento(aluno.getData_nascimento());
-                this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae().trim());
-                this.manterAlunos.getTxtNomePai().setText(aluno.getNome_pai());
-                this.manterAlunos.setDtMatricula(aluno.getData_matricula());
-                this.manterAlunos.getCbxCurso().setSelectedItem(aluno.getCurso().getDescricao());
-                this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento().getNome());
-                this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getEndereco().getCidade().getNome());
-                consultou = true;
-                if (aluno.getEndereco() != null) {
-                    idEnderecoAlunoConsultado = aluno.getEndereco().getId();
-                }
+                mostrarAlunoNaTela(aluno);
             } catch (Exception erro) {
                 JOptionPane.showMessageDialog(null, erro.getMessage());
             }
@@ -179,7 +93,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
                     try {
                         na.excluiAluno(ra);
-                        if(idEnderecoAlunoConsultado != -1){
+                        if (idEnderecoAlunoConsultado != -1) {
                             NEndereco enderecoDao = new NEndereco();
                             enderecoDao.excluiEndereco(idEnderecoAlunoConsultado);
                         }
@@ -228,6 +142,11 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
                         NCidades cidadeDao = new NCidades();
                         cidadeDao.addCidade(cidade);
+                        getCidadesufs();
+                        listarCidadesUfsNasc();
+                        if (enderecoObrigatorio) {
+                            listarCidadesUfs();
+                        }
                         JOptionPane.showMessageDialog(null, "Cidade " + cidadeNome + " adicionado com sucesso!");
                     } else {
                         JOptionPane.showMessageDialog(null, "UF digitada não existe ou não esta cadastrada!");
@@ -267,6 +186,46 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
         } else if (e.getSource() == this.manterAlunos.getBtnLimpar()) {
             limparCampos();
+        } else if (e.getSource() == this.manterAlunos.getBtnProximo()) {
+            try {
+                consultou = true;
+                indexRegistro++;
+                NAlunos alunoDao = new NAlunos();
+                EAluno aluno = alunoDao.getNextAluno(indexRegistro);
+                if (aluno != null) {
+                    mostrarAlunoNaTela(aluno);
+                } else {
+                    indexRegistro--;
+                    JOptionPane.showMessageDialog(null, "Este é o ultimo registro :)");
+                    this.manterAlunos.getBtnProximo().setEnabled(false);
+                }
+                this.manterAlunos.getBtnAnterior().setEnabled(true);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        } else if (e.getSource() == this.manterAlunos.getBtnAnterior()) {
+            try {
+                //gambiarra para trazer primeiro registro :) sono zzzzzz
+                if (indexRegistro == -1) {
+                    indexRegistro = 1;
+                }
+                consultou = true;
+                indexRegistro--;
+                NAlunos alunoDao = new NAlunos();
+
+                if (indexRegistro < 0) {
+                    JOptionPane.showMessageDialog(null, "Este é o Primeiro registro :)");
+                    this.manterAlunos.getBtnAnterior().setEnabled(false);
+                    indexRegistro++;
+                } else {
+                    EAluno aluno = alunoDao.getNextAluno(indexRegistro);
+                    mostrarAlunoNaTela(aluno);
+                }
+                this.manterAlunos.getBtnProximo().setEnabled(true);
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }
     }
 
@@ -277,6 +236,73 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             }
         }
         return null;
+    }
+
+    private EAluno pegarAlunoDaTela() throws ParseException {
+        EAluno aluno = new EAluno();
+        ECidades cidadeResidencia = new ECidades();
+        ECidades cidadeNascimento = new ECidades();
+        EEndereco endereco = new EEndereco();
+        ECursos curso = new ECursos();
+        NCursos cursoDao = new NCursos();
+        NCidades cidadeDao = new NCidades();
+
+        aluno.setRa(this.manterAlunos.getRA().getText());
+        aluno.setNome(this.manterAlunos.getTxtNomeAluno().getText());
+
+        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        aluno.setData_nascimento(f.parse(this.manterAlunos.getTxtDataNasc().getText()));
+        cidadeNascimento.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString()));
+        cidadeNascimento.setNome(this.manterAlunos.getCbxCidadeNasc().getSelectedItem().toString());
+        cidadeNascimento.setUF(this.manterAlunos.getCbxUFNasc().getSelectedItem().toString());
+        aluno.setCidade_nascimento(cidadeNascimento);
+
+        if (enderecoObrigatorio) {
+            endereco.setRua(this.manterAlunos.getTxtRua().getText());
+            endereco.setSetor(this.manterAlunos.getTxtSetor().getText());
+            endereco.setCep(this.manterAlunos.getTxtCEP().getText().replace(".", "").replace("-", ""));
+            cidadeResidencia.setId(cidadeDao.getIdByNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString()));
+            cidadeResidencia.setNome(this.manterAlunos.getCbxCidadeAtual().getSelectedItem().toString());
+            cidadeResidencia.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
+            endereco.setCidade(cidadeResidencia);
+            NEndereco enderecoDao = new NEndereco();
+            endereco.setId(idEnderecoAlunoConsultado);
+            aluno.setEndereco(endereco);
+        }
+
+        aluno.setNome_pai(this.manterAlunos.getTxtNomePai().getText());
+        aluno.setNome_mae(this.manterAlunos.getTxtNomeMae().getText());
+        aluno.setData_matricula(f.parse(this.manterAlunos.getTxtDataMatricula().getText()));
+
+        curso.setId(cursoDao.getIdByNome(this.manterAlunos.getCbxCurso().getSelectedItem().toString()));
+        curso.setDescricao(this.manterAlunos.getCbxCurso().getSelectedItem().toString());
+        aluno.setCurso(curso);
+        return aluno;
+    }
+
+    private void mostrarAlunoNaTela(EAluno aluno) {
+        limparCampos();
+        getCidadesufs();
+        listarCidadesUfsNasc();
+        if (aluno.getEndereco() != null) {
+            idEnderecoAlunoConsultado = aluno.getEndereco().getId();
+            listarCidadesUfs();
+        }
+        this.manterAlunos.getRA().setText(aluno.getRa());
+        this.manterAlunos.getTxtNomeAluno().setText(aluno.getNome());
+        this.manterAlunos.getTxtRua().setText(aluno.getEndereco().getRua());
+        this.manterAlunos.getTxtSetor().setText(aluno.getEndereco().getSetor());
+        this.manterAlunos.getTxtCEP().setText(aluno.getEndereco().getCep());
+        this.manterAlunos.setDtNascimento(aluno.getData_nascimento());
+        this.manterAlunos.getTxtNomeMae().setText(aluno.getNome_mae().trim());
+        this.manterAlunos.getTxtNomePai().setText(aluno.getNome_pai());
+        this.manterAlunos.setDtMatricula(aluno.getData_matricula());
+        this.manterAlunos.getCbxCurso().setSelectedItem(aluno.getCurso().getDescricao());
+        this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento().getNome());
+        this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getEndereco().getCidade().getNome());
+        this.manterAlunos.getCbxUF().setSelectedItem(aluno.getEndereco().getCidade().getUF());
+        this.manterAlunos.getCbxUFNasc().setSelectedItem(aluno.getCidade_nascimento().getUF());
+        consultou = true;
     }
 
     /**
@@ -309,6 +335,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
         this.manterAlunos.getTxtNomePai().setText("");
         this.manterAlunos.getTxtNomeMae().setText("");
         this.manterAlunos.getTxtDataMatricula().setText("");
+        consultou = false;
     }
 
     private void listarCursos() {

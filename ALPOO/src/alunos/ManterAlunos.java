@@ -174,6 +174,8 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.miCidades.addActionListener(control);
         this.miUf.addActionListener(control);
         this.btnLimpar.addActionListener(control);
+        this.btnProximo.addActionListener(control);
+        this.btnAnterior.addActionListener(control);
     }
 
     /**

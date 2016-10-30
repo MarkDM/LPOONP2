@@ -16,7 +16,6 @@ public class EEndereco {
     private String setor;
     private String cep;
     private ECidades cidade;
-    private String UF;
 
     public String getRua() {
         return rua;
@@ -48,14 +47,6 @@ public class EEndereco {
 
     public void setCidade(ECidades cidade) {
         this.cidade = cidade;
-    }
-
-    public String getUF() {
-        return UF;
-    }
-
-    public void setUF(String UF) {
-        this.UF = UF;
     }
 
     public int getId() {

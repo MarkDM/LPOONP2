@@ -40,7 +40,6 @@ public class NAlunos {
             + "      , e.rua\n"
             + "      , e.setor\n"
             + "      , e.cep\n"
-            + "      , e.uf_sigla as uf_atual_sigla\n"
             + "      , cd.cidade_id \n"
             + "      , cd.cidade_nome as cidade_atual\n"
             + "      , cd.uf_sigla as uf_descricao\n"
@@ -50,7 +49,9 @@ public class NAlunos {
             + "	inner join cidades cid on cid.cidade_id = a.cidade_nascimento\n"
             + "	left join cidades cd on cd.cidade_id = e.cidade_id\n";
 
-    private final String FIND = this.LIST + " WHERE RA = ? order by a.nome";
+    private final String FIND = this.LIST + " WHERE upper(RA) = ? order by a.nome";
+    
+    private final String FIND_NEXT = this.LIST + " limit 1 offset ?";
 
     public NAlunos() {
     }
@@ -105,7 +106,7 @@ public class NAlunos {
                     NEndereco enderecoDao = new NEndereco();
                     if (aluno.getEndereco().getId() == 0) {
                         enderecoDao.addEndereco(aluno.getEndereco());
-                        aluno.getEndereco().setId(enderecoDao.getIdEndereco(aluno.getEndereco()));
+                        aluno.getEndereco().setId(enderecoDao.getUltimoIdEndereco());
                     } else {
                         enderecoDao.alterar(aluno.getEndereco());
                     }
@@ -181,7 +182,6 @@ public class NAlunos {
                 endereco.setRua(rs.getString("rua"));
                 endereco.setSetor(rs.getString("setor"));
                 endereco.setCep(rs.getString("cep"));
-                endereco.setUF(rs.getString("uf_atual_sigla"));
                 ECidades cidadeAtual = new ECidades();
                 cidadeAtual.setId(rs.getInt("cidade_id"));
                 cidadeAtual.setNome(rs.getString("cidade_atual"));
@@ -225,6 +225,64 @@ public class NAlunos {
 
                 //setando cidade nascimento
                 cidadeNascimento.setId(rs.getInt("cidade_nasc_id"));
+                cidadeNascimento.setNome(rs.getString("cidadenascimento"));
+                cidadeNascimento.setUF(rs.getString("uf_nascimento_sigla"));
+                aluno.setCidade_nascimento(cidadeNascimento);
+
+                //setando curso
+                curso.setId(rs.getInt("curso_id"));
+                curso.setDescricao(rs.getString("nome_curso"));
+                aluno.setCurso(curso);
+
+                //setando endereço
+                endereco.setId(rs.getInt("endereco_id"));
+                endereco.setRua(rs.getString("rua"));
+                endereco.setSetor(rs.getString("setor"));
+                endereco.setCep(rs.getString("cep"));
+                ECidades cidadeAtual = new ECidades();
+                cidadeAtual.setId(rs.getInt("cidade_id"));
+                cidadeAtual.setNome(rs.getString("cidade_atual"));
+                cidadeAtual.setUF(rs.getString("uf_descricao"));
+                endereco.setCidade(cidadeAtual);
+                aluno.setEndereco(endereco);
+
+                return aluno;
+            } else {
+                throw new RuntimeException("Aluno não encontrado!");
+            }
+        } catch (SQLException | RuntimeException e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectionFactory2.fechaConexao(con, pstm, rs);
+        }
+    }
+
+    public EAluno getNextAluno(int starIndex) {
+        EAluno aluno = new EAluno();
+        EEndereco endereco = new EEndereco();
+        ECidades cidadeNascimento = new ECidades();
+        ECursos curso = new ECursos();
+        PreparedStatement pstm = null;
+        Connection con = null;
+        ResultSet rs = null;
+        try {
+            con = new ConnectionFactory2().getConnection();
+            pstm = con.prepareStatement(FIND_NEXT);
+            pstm.setInt(1, starIndex);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+
+                //setando aluno
+                aluno.setRa(rs.getString("ra"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setData_nascimento(rs.getDate("dt_nascimento"));
+                aluno.setNome_pai(rs.getString("nome_pai"));
+                aluno.setNome_mae(rs.getString("nome_mae"));
+                aluno.setData_matricula(rs.getDate("data_matricula"));
+
+                //setando cidade nascimento
+                cidadeNascimento.setId(rs.getInt("cidade_nasc_id"));
                 cidadeNascimento.setNome(rs.getString("cidade_nascimento"));
                 cidadeNascimento.setUF(rs.getString("uf_nascimento_sigla"));
                 aluno.setCidade_nascimento(cidadeNascimento);
@@ -239,7 +297,6 @@ public class NAlunos {
                 endereco.setRua(rs.getString("rua"));
                 endereco.setSetor(rs.getString("setor"));
                 endereco.setCep(rs.getString("cep"));
-                endereco.setUF(rs.getString("uf_atual_sigla"));
                 ECidades cidadeAtual = new ECidades();
                 cidadeAtual.setId(rs.getInt("cidade_id"));
                 cidadeAtual.setNome(rs.getString("cidade_atual"));
@@ -249,7 +306,7 @@ public class NAlunos {
 
                 return aluno;
             } else {
-                throw new RuntimeException("Aluno não encontrado!");
+                return null;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -257,7 +314,7 @@ public class NAlunos {
             ConnectionFactory2.fechaConexao(con, pstm, rs);
         }
     }
-
+    
     public void excluiAluno(String ra) {
         PreparedStatement pstm = null;
         Connection con = null;
