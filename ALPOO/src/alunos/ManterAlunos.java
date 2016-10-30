@@ -115,6 +115,14 @@ public class ManterAlunos extends javax.swing.JFrame {
         return txtSetor;
     }
 
+    public JButton getBtnLimpar() {
+        return btnLimpar;
+    }
+
+    public void setBtnLimpar(JButton btnLimpar) {
+        this.btnLimpar = btnLimpar;
+    }
+    
     public void setDtNascimento(Date dt) {
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
         this.txtDataNasc.setText(f.format(dt));
@@ -165,6 +173,7 @@ public class ManterAlunos extends javax.swing.JFrame {
         this.txtCEP.addFocusListener(control);
         this.miCidades.addActionListener(control);
         this.miUf.addActionListener(control);
+        this.btnLimpar.addActionListener(control);
     }
 
     /**
@@ -225,6 +234,7 @@ public class ManterAlunos extends javax.swing.JFrame {
         cbxCurso = new javax.swing.JComboBox();
         btnAddCurso = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCidades = new javax.swing.JMenu();
         miCidades = new javax.swing.JMenuItem();
@@ -484,14 +494,18 @@ public class ManterAlunos extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(txtDataMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(cbxCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAddCurso)))
-                .addContainerGap(510, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(cbxCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnAddCurso)))
+                        .addContainerGap(548, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(txtDataMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -511,6 +525,8 @@ public class ManterAlunos extends javax.swing.JFrame {
 
         btnSair.setText("Sair");
         btnSair.setName("btnSair"); // NOI18N
+
+        btnLimpar.setText("Limpar");
 
         jMenuBar1.setBackground(new java.awt.Color(204, 204, 204));
         jMenuBar1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -546,6 +562,8 @@ public class ManterAlunos extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLimpar)
+                        .addGap(18, 18, 18)
                         .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -562,7 +580,9 @@ public class ManterAlunos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 20, Short.MAX_VALUE)
-                .addComponent(btnSair)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSair)
+                    .addComponent(btnLimpar))
                 .addGap(23, 23, 23))
         );
 
@@ -616,6 +636,7 @@ public class ManterAlunos extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnSair;
     private javax.swing.JComboBox cbxCidadeAtual;

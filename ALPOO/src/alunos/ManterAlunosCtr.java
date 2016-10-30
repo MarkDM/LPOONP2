@@ -22,6 +22,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
     boolean consultou = false;
     List<ECidades> cidades = new ArrayList<>();
     List<EUnidadeFederativa> ufs = new ArrayList<>();
+    int idEnderecoAlunoConsultado = -1;
 
     public ManterAlunosCtr(ManterAlunos manterAlunos) {
         this.manterAlunos = manterAlunos;
@@ -36,8 +37,8 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
         if (e.getSource() == this.manterAlunos.getBtnIncluir()) {
             if (!CamposObrigatorioPreenchido()) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatorios! (*)");
-            } else if (enderecoObrigatorio) {
-                JOptionPane.showMessageDialog(null, "Preencha todos os cmpos referente a endereço!");
+            } else if (enderecoObrigatorio && !CamposEnderecoPreenchido()) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos referente a endereço!");
             } else {
                 try {
                     EAluno aluno = new EAluno();
@@ -91,7 +92,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             } else {
                 if (!CamposObrigatorioPreenchido()) {
                     JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatorios! (*)");
-                } else if (enderecoObrigatorio) {
+                } else if (enderecoObrigatorio && !CamposEnderecoPreenchido()) {
                     JOptionPane.showMessageDialog(null, "Preencha todos os cmpos referente a endereço!");
                 } else {
                     try {
@@ -124,7 +125,8 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                             cidadeResidencia.setUF(this.manterAlunos.getCbxUF().getSelectedItem().toString());
                             endereco.setCidade(cidadeResidencia);
                             NEndereco enderecoDao = new NEndereco();
-                            endereco.setId(enderecoDao.getIdEndereco(endereco));
+                            int idEndereco = enderecoDao.getIdEndereco(endereco);
+                            endereco.setId(idEndereco);
                             aluno.setEndereco(endereco);
                         }
 
@@ -160,13 +162,14 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                 this.manterAlunos.getCbxCidadeNasc().setSelectedItem(aluno.getCidade_nascimento().getNome());
                 this.manterAlunos.getCbxCidadeAtual().setSelectedItem(aluno.getEndereco().getCidade().getNome());
                 consultou = true;
+                if (aluno.getEndereco() != null) {
+                    idEnderecoAlunoConsultado = aluno.getEndereco().getId();
+                }
             } catch (Exception erro) {
                 JOptionPane.showMessageDialog(null, erro.getMessage());
             }
         } else if (e.getSource() == this.manterAlunos.getBtnExcluir()) {
-
             String ra = manterAlunos.getRA().getText();
-
             if (consultou) {
                 NAlunos na = new NAlunos();
 
@@ -176,6 +179,10 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
                     try {
                         na.excluiAluno(ra);
+                        if(idEnderecoAlunoConsultado != -1){
+                            NEndereco enderecoDao = new NEndereco();
+                            enderecoDao.excluiEndereco(idEnderecoAlunoConsultado);
+                        }
                         JOptionPane.showMessageDialog(null, "Aluno " + manterAlunos.getRA().getText() + " foi excluido", "", JOptionPane.OK_OPTION);
                         limparCampos();
                         this.manterAlunos.getTxtRA().requestFocus();
@@ -258,6 +265,8 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
 
+        } else if (e.getSource() == this.manterAlunos.getBtnLimpar()) {
+            limparCampos();
         }
     }
 
@@ -279,6 +288,15 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                 || "".equals(this.manterAlunos.getTxtDataNasc().getText().trim())
                 || "".equals(this.manterAlunos.getTxtDataMatricula().getText().trim())
                 || "".equals(this.manterAlunos.getTxtNomeMae().getText().trim()));
+    }
+
+    /**
+     * @return true caso todos os campos endereco forem preenchidos.
+     */
+    private boolean CamposEnderecoPreenchido() {
+        return !("".equals(this.manterAlunos.getTxtRua().getText())
+                || "".equals(this.manterAlunos.getTxtSetor().getText())
+                || "".equals(this.manterAlunos.getTxtCEP().getText()));
     }
 
     private void limparCampos() {

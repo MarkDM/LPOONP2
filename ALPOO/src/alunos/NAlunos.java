@@ -103,7 +103,12 @@ public class NAlunos {
                 if (alterarEndereco) {
                     //*********altera Endereco
                     NEndereco enderecoDao = new NEndereco();
-                    enderecoDao.alterar(aluno.getEndereco());
+                    if (aluno.getEndereco().getId() == 0) {
+                        enderecoDao.addEndereco(aluno.getEndereco());
+                        aluno.getEndereco().setId(enderecoDao.getIdEndereco(aluno.getEndereco()));
+                    } else {
+                        enderecoDao.alterar(aluno.getEndereco());
+                    }
                 }
                 conexao = new ConnectionFactory2().getConnection();
                 if (alterarEndereco) {
@@ -119,13 +124,13 @@ public class NAlunos {
                 pstm.setString(3, aluno.getNome_pai());
                 pstm.setString(4, aluno.getNome_mae());
                 pstm.setInt(5, aluno.getCidade_nascimento().getId());
-                 pstm.setInt(6, aluno.getCurso().getId());
+                pstm.setInt(6, aluno.getCurso().getId());
                 pstm.setDate(7, new java.sql.Date(aluno.getData_matricula().getTime()));
                 if (alterarEndereco) {
                     pstm.setInt(8, aluno.getEndereco().getId());
                     pstm.setString(9, aluno.getRa());
                 } else {
-                      pstm.setString(8, aluno.getRa());
+                    pstm.setString(8, aluno.getRa());
                 }
                 pstm.execute();
             } catch (Exception e) {

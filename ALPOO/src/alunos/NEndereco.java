@@ -29,6 +29,9 @@ public class NEndereco {
             + "  and retira_acentuacao(UPPER(TRIM(BOTH cep))) =   ?\n"
             + "  and retira_acentuacao(UPPER(TRIM(BOTH uf_sigla))) = ?";
 
+    private final String DELETE = "DELETE FROM public.endereco\n"
+            + " WHERE endereco_id = ?;";
+
     public void alterar(EEndereco endereco) {
         Connection conexao = null;
         PreparedStatement pstm = null;
@@ -73,7 +76,8 @@ public class NEndereco {
                 idEndereco = rs.getInt("endereco_id");
                 return idEndereco;
             } else {
-                throw new RuntimeException("Endereço não encontrado!");
+                idEndereco = 0;
+                return idEndereco;
             }
         } catch (SQLException | RuntimeException e) {
             throw new RuntimeException(e);
@@ -98,6 +102,21 @@ public class NEndereco {
             throw new RuntimeException(ex);
         } finally {
             ConnectionFactory2.fechaConexao(conexao, pstm);
+        }
+    }
+    
+    public void excluiEndereco(int idEndereco) {
+        PreparedStatement pstm = null;
+        Connection con = null;
+        try {
+            con = new ConnectionFactory2().getConnection();
+            pstm = con.prepareStatement(DELETE);
+            pstm.setInt(1, idEndereco);
+            pstm.execute();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            ConnectionFactory2.fechaConexao(con, pstm);
         }
     }
 }
