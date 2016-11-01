@@ -205,7 +205,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             }
         } else if (e.getSource() == this.manterAlunos.getBtnAnterior()) {
             try {
-                //gambiarra para trazer primeiro registro :) sono zzzzzz
+                //gambiarra para trazer primeiro registro :) sono zzzzz
                 if (indexRegistro == -1) {
                     indexRegistro = 1;
                 }
