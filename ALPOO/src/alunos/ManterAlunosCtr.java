@@ -116,6 +116,9 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
 
             String nomeCurso = JOptionPane.showInputDialog(null, "Digite o nome do curso: ", "Cadastro Curso", JOptionPane.OK_CANCEL_OPTION);
             if (nomeCurso != null) {
+                if (nomeCurso.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Nome do curso invalido!");
+                }else{
                 try {
                     ECursos c = new ECursos();
                     c.setDescricao(nomeCurso);
@@ -125,6 +128,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                     JOptionPane.showMessageDialog(null, "Curso adicionado com sucesso!");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
                 }
             }
 
