@@ -41,7 +41,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
             } else if (enderecoObrigatorio && !CamposEnderecoPreenchido()) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos referente a endereço!");
             } else if (consultou) {
-                JOptionPane.showMessageDialog(null, "Você não pode incluir um aluno ja cadastroda! Que tal alterar?!");
+                JOptionPane.showMessageDialog(null, "Você não pode incluir um aluno ja cadastrado! Que tal alterar?!");
             } else {
                 try {
                     EAluno aluno = pegarAlunoDaTela();
