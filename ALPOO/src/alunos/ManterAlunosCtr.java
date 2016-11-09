@@ -200,7 +200,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                     mostrarAlunoNaTela(aluno);
                 } else {
                     indexRegistro--;
-                    JOptionPane.showMessageDialog(null, "Este é o ultimo registro :)");
+                    //JOptionPane.showMessageDialog(null, "Este é o ultimo registro :)");
                     this.manterAlunos.getBtnProximo().setEnabled(false);
                 }
                 this.manterAlunos.getBtnAnterior().setEnabled(true);
@@ -218,7 +218,7 @@ public class ManterAlunosCtr implements WindowListener, ActionListener, KeyListe
                 NAlunos alunoDao = new NAlunos();
 
                 if (indexRegistro < 0) {
-                    JOptionPane.showMessageDialog(null, "Este é o Primeiro registro :)");
+                    //JOptionPane.showMessageDialog(null, "Este é o Primeiro registro :)");
                     this.manterAlunos.getBtnAnterior().setEnabled(false);
                     indexRegistro++;
                 } else {
